@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { HeaderKey } from './types';
+import { GlobalStateProvider } from './context';
 import PageHeader from './PageHeader';
 import Toolbar from './Toolbar';
 import TableRow from './TableRow';
@@ -8,15 +10,10 @@ import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
 
-interface Headers {
-  fieldName: '',
-  headerName: ''
-}
-
 interface Props {
   showPageHeader: boolean;
   showToolbar: boolean;
-  headers: Headers[];
+  headers: HeaderKey[];
   rows: any[];
   docTitle: string;
 }
@@ -50,46 +47,42 @@ function DataSheet({
   docTitle,
 }: Props) {
   return (
-    <>
-      <div className="fixed-top">
-        {showPageHeader && <PageHeader docTitle={docTitle} />}
-        {showToolbar && (
-          <Toolbar style={{
-            'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 },
-          }}
-          />
-        )}
-      </div>
-      <div style={{
-        paddingTop: calculateTableBodyPaddingSpace(showPageHeader, showToolbar),
-      }}
-      />
-      <div className="datasheet-base">
-        <div className="datasheet-body">
-          <TableRow>
-            <TableHeader>
-              {
-                headers.map((header) => (
-                  <Cell value={header.headerName} />
-                ))
-              }
-            </TableHeader>
-          </TableRow>
-          {
-            rows.map((rowObj, i1) => (
-              <TableRow key={i1 as any}>
-                <TableData>
-                  {
-                    renderRow(rowObj)
-                  }
-                </TableData>
-              </TableRow>
-            ))
-          }
-
+    <GlobalStateProvider>
+      <>
+        <div className="fixed-top">
+          {showPageHeader && <PageHeader docTitle={docTitle} />}
+          {showToolbar && (
+            <Toolbar style={{
+              'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 },
+            }}
+            />
+          )}
         </div>
-      </div>
-    </>
+        <div style={{
+          paddingTop: calculateTableBodyPaddingSpace(showPageHeader, showToolbar),
+        }}
+        />
+        <div className="datasheet-base">
+          <div className="datasheet-body">
+            <TableRow>
+              <TableHeader headers={headers} />
+            </TableRow>
+            {
+              rows.map((rowObj, i1) => (
+                <TableRow key={i1 as any}>
+                  <TableData>
+                    {
+                      renderRow(rowObj)
+                    }
+                  </TableData>
+                </TableRow>
+              ))
+            }
+
+          </div>
+        </div>
+      </>
+    </GlobalStateProvider>
   );
 }
 
