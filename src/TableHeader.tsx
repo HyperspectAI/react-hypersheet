@@ -1,22 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Cell from './Cell';
+import { HeaderKey } from './types';
 
 interface Props {
-  children : JSX.Element[]
+  headers: HeaderKey[]
 }
 
 function TableHeader({
-  children,
-}:Props) {
+  headers,
+}: Props) {
   return (
     <div className="table-header">
-      {children}
+      {
+        headers.map((header) => (
+          <Cell value={header.headerName} />
+        ))
+      }
     </div>
   );
 }
 
 TableHeader.propTypes = {
-  children: PropTypes.element.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  headers: PropTypes.array.isRequired,
 };
 
 export default TableHeader;
