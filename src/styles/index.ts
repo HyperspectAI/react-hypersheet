@@ -1,11 +1,10 @@
-import { CSSProperties } from 'react';
 import { createUseStyles } from 'react-jss';
 
-interface StylesProperties {
-  [key: string]: CSSProperties | StylesProperties;
-}
+// interface StylesProperties {
+//   [key : unique]: CSSProperties | StylesProperties;
+// }
 
-const styles: StylesProperties = {
+const styles = {
   container: {
     marginRight: '15px',
     marginLeft: '15px',
@@ -51,12 +50,12 @@ const styles: StylesProperties = {
     borderBottom: 'solid 1px #e1e1e1',
     borderTopLeftRadius: '10px',
     borderTopRightRadius: '10px',
-    '& toolbarList': {
+    '&.toolbarList': {
       display: 'flex',
       padding: 0,
       margin: 0,
     },
-    '& toolbarItem': {
+    '&.toolbarItem': {
       cursor: 'pointer',
       fontSize: '13px',
       fontWeight: 500,
@@ -86,6 +85,10 @@ const styles: StylesProperties = {
   },
   dataSheetBody: {
     display: 'table-row-group',
+  },
+  tableHeader: {
+    background: '#f2f2f2',
+    color: 'black',
   },
   tableRow: {
     display: 'table-row',

@@ -6,6 +6,7 @@ import {
   MdOutlineSort,
 } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import useStyles from './styles';
 
 interface Props {
   style: {
@@ -16,10 +17,11 @@ interface Props {
 function Toolbar({
   style,
 }: Props) {
+  const classes = useStyles();
   return (
-    <div className="datasheet-toolbar" style={style['datasheet-toolbar']}>
-      <div className="toolbar-list">
-        <p className="toolbar-item">
+    <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
+      <div className="toolbarList">
+        <p className="toolbarItem">
           <MdRemoveRedEye />
           Hide fields
         </p>

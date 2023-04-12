@@ -134,3 +134,5 @@ body {
 .selected-table-cell {
     outline: solid 1px black;
 }
+
+/* Moved to JSS till here */

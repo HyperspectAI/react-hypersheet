@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import useStyles from './styles';
 
 interface Props {
-  children : JSX.Element;
+  children: JSX.Element;
 }
 
-function TableRow({ children }:Props) {
+function TableRow({ children }: Props) {
+  const classes = useStyles();
   return (
-    <div className="table-row">
+    <div className={classes.tableRow}>
       {children}
     </div>
   );
