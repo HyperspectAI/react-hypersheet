@@ -34,7 +34,7 @@ const styles = {
     flexDirection: 'row',
     height: '60px',
     justifyContent: 'space-between',
-    '& pageTitle': {
+    '&.pageTitle': {
       color: 'white',
       fontWeight: 400,
     },
@@ -47,7 +47,7 @@ const styles = {
     justifyContent: 'space-between',
     padding: '8px 16px 8px 16px',
     alignItems: 'center',
-    borderBottom: 'solid 1px #e1e1e1',
+    // borderBottom: 'solid 1px #e1e1e1',
     borderTopLeftRadius: '10px',
     borderTopRightRadius: '10px',
     '&.toolbarList': {
@@ -70,7 +70,7 @@ const styles = {
       MozUserSelect: 'none',
       msUserSelect: 'none',
       userSelect: 'none',
-      svg: {
+      '& svg': {
         marginRight: '4px',
       },
       '&:hover': {

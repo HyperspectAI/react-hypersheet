@@ -20,20 +20,20 @@ function Toolbar({
   const classes = useStyles();
   return (
     <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
-      <div className="toolbarList">
-        <p className="toolbarItem">
+      <div className={`${classes.dataSheetToolbar} toolbarList`}>
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdRemoveRedEye />
           Hide fields
         </p>
-        <p className="toolbar-item">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdFilterList />
           Filter
         </p>
-        <p className="toolbar-item">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdCalendarViewMonth />
           Group
         </p>
-        <p className="toolbar-item">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdOutlineSort />
           Sort
         </p>
