@@ -14,7 +14,11 @@ function TableHeader({
     <div className="table-header">
       {
         headers.map((header) => (
-          <Cell value={header.headerName} />
+          <Cell
+            value={header.headerName}
+            searchTerms=""
+            rowHeights={0}
+          />
         ))
       }
     </div>

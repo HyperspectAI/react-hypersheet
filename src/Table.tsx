@@ -3,7 +3,7 @@ import DataSheet from './DataSheet';
 
 function Table() {
   return (
-    <DataSheet />
+    <DataSheet headers={[]} rows={[]} />
   );
 }
 
