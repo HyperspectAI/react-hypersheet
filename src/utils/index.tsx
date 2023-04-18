@@ -1,21 +1,12 @@
+/* eslint-disable max-len */
 /* eslint-disable no-else-return */
 /* eslint-disable arrow-body-style */
 /* eslint-disable import/prefer-default-export */
 interface Data {
   [key: string]: number | string | boolean | null;
 }
-
 type Direction = 'asc' | 'desc';
-
-interface Filterable {
-  [key: string]: string | number | null;
-}
-
-interface FilterOption {
-  operator: string;
-  value: string;
-  options: string;
-}
+type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 
 export function sortFunc(data: Data[], field: string, direction: Direction): Data[] {
   return data.slice().sort((a, b) => {
@@ -43,19 +34,20 @@ export const renderHighlightedText = (text: string, searchTerm: string) => {
   return highlighted;
 };
 
-export function filter<T extends Filterable>(
-  array: T[],
-  filterOptions: { [key: string]: FilterOption },
-): T[] {
-  return array.filter((row) => Object.keys(filterOptions).every((column) => {
-    const { operator, value } = filterOptions[column];
-    const rowValue = row[column];
+export function filterData(data: Data[], fieldName: string, operator: Operator, value: any): Data[] {
+  return data.filter((item) => {
+    const fieldValue = item[fieldName];
     switch (operator) {
-      case 'is': return rowValue === value;
-      case 'is not': return rowValue !== value;
-      case 'is empty': return rowValue === null || rowValue === '';
-      case 'is not empty': return rowValue !== null && rowValue !== '';
-      default: return true;
+      case 'is':
+        return fieldValue === value;
+      case 'is not':
+        return fieldValue !== value;
+      case 'is empty':
+        return fieldValue === null || fieldValue === undefined || fieldValue === '';
+      case 'is not empty':
+        return fieldValue !== null && fieldValue !== undefined && fieldValue !== '';
+      default:
+        throw new Error(`Unsupported operator: ${operator}`);
     }
-  }));
+  });
 }

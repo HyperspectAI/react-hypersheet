@@ -8,6 +8,7 @@ import {
   MdSearch,
 } from 'react-icons/md';
 
+type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 interface Props {
   style: {
     'datasheet-toolbar': React.CSSProperties
@@ -15,7 +16,9 @@ interface Props {
   handleSort: any,
   handleSearch: any,
   columns: any,
-  handleRowHeightChange: any
+  handleRowHeightChange: any,
+  handleFilter: any,
+  handleHideColumns: any
 }
 function Toolbar({
   style,
@@ -23,13 +26,22 @@ function Toolbar({
   handleSearch,
   columns,
   handleRowHeightChange,
+  handleFilter,
+  handleHideColumns,
 }: Props) {
   const [openSortModal, setOpenSortModal] = useState(false);
   const [openRowModal, setOpenRowModal] = useState(false);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [openHideFields, setOpenHideField] = useState(false);
   const [selectSortField, setSelectSortField] = useState('');
-
   const [rowHeight] = useState<number>(50);
   const [rowHeightOptions] = useState<number[]>([40, 50, 60, 70]);
+  const [filterData, setFilterData] = useState({
+    fieldName: '',
+    operator: '',
+    value: '',
+  });
+  const operators: Operator[] = ['is', 'is not', 'is empty', 'is not empty'];
   const handleSortFieldChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectSortField(event.target.value as any);
   };
@@ -42,16 +54,44 @@ function Toolbar({
   const handleOrderChange = (order: any) => {
     handleSort(selectSortField, order);
   };
+  const handleFilterData = () => {
+    console.log('filterData', filterData);
+    handleFilter(filterData?.fieldName, filterData?.operator, filterData?.value);
+  };
+
   return (
     <div className="datasheet-toolbar" style={style['datasheet-toolbar']}>
       <div className="toolbar-list">
         <p className="toolbar-item">
-          <MdRemoveRedEye />
+          <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
           Hide fields
+          {openHideFields ? (
+            <select id="field-select" value={selectSortField} onChange={(e) => handleHideColumns(e.target.value, false)}>
+              {columns?.map((ele: any) => (
+                <option value={ele?.fieldName}>{ele?.fieldName}</option>
+              ))}
+            </select>
+          ) : null}
         </p>
-        <p className="toolbar-item" aria-hidden="true">
-          <MdFilterList />
+        <p className="toolbar-item">
+          <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
           Filter
+          {openFilterModal ? (
+            <>
+              <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
+                {columns?.map((ele: any) => (
+                  <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                ))}
+              </select>
+              <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
+                {operators?.map((ele: any) => (
+                  <option value={ele}>{ele}</option>
+                ))}
+              </select>
+              <input type="text" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
+              <button onClick={handleFilterData}>Filter </button>
+            </>
+          ) : null}
         </p>
         <p className="toolbar-item">
           <MdCalendarViewMonth />

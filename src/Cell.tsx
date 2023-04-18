@@ -5,7 +5,7 @@ import { renderHighlightedText } from './utils';
 interface Props {
   value: string;
   searchTerms: string;
-  rowHeights: number
+  rowHeights: number;
 }
 
 function Cell({

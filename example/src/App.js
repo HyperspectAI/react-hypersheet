@@ -18,7 +18,8 @@ const getHeaders = (prospects) => {
   const arr = [];
   Object.keys(prospects[0]).map(k => arr.push({
     fieldName: k,
-    headerName: k.toUpperCase()
+    headerName: k.toUpperCase(),
+    isVisible : true,
   }));
   return arr;
 }
@@ -36,7 +37,7 @@ function App() {
 
   if (!prospects.length) return null;
   return (
-    <div>
+      <div>
       <Table
         headers={getHeaders(prospects)}
         rows={prospects}

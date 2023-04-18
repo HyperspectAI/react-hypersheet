@@ -14,11 +14,13 @@ function TableHeader({
     <div className="table-header">
       {
         headers.map((header) => (
+          header?.isVisible && (
           <Cell
             value={header.headerName}
             searchTerms=""
             rowHeights={0}
           />
+          )
         ))
       }
     </div>

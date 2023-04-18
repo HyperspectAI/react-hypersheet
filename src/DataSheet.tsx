@@ -10,7 +10,7 @@ import TableRow from './TableRow';
 import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
-import { sortFunc } from './utils';
+import { filterData, sortFunc } from './utils';
 
 interface Props {
   showPageHeader: boolean;
@@ -20,18 +20,20 @@ interface Props {
   docTitle: string;
 }
 
-const renderRow = (rowObj: any, searchTerm: string, rowHeight: number) => (
+const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: any) => (
   <>
     {
-      Object.keys(rowObj).map((k: string): JSX.Element | null => {
+      Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
         if (typeof rowObj[k] === 'string') {
           return (
+            columns[index]?.isVisible && (
             <Cell
               value={rowObj[k]}
               searchTerms={searchTerm}
               key={rowObj[k]}
               rowHeights={rowHeight}
             />
+            )
           );
         }
         return null;
@@ -58,6 +60,7 @@ function DataSheet({
   const [data, setData] = useState<any>(rows);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
+  const [columns, setColumns] = useState(headers);
   function onSort(filterOption: string, option: any): void {
     // eslint-disable-next-line @typescript-eslint/comma-spacing
     const sortData = sortFunc(data, filterOption, option);
@@ -69,6 +72,16 @@ function DataSheet({
   function RowHeight(height: number): void {
     setRowHeight(height);
   }
+  function filter(fieldName: string, operator: any, value: any): void {
+    const newFilterData = filterData(data, fieldName, operator, value);
+    setData(newFilterData);
+  }
+  function updateVisibility(columnName: string, value: boolean): void {
+    const index = columns.findIndex((column) => column.fieldName === columnName);
+    const newColumns = [...columns];
+    newColumns[index].isVisible = value;
+    setColumns(newColumns);
+  }
 
   return (
     <GlobalStateProvider>
@@ -76,7 +89,7 @@ function DataSheet({
         <div className="fixed-top">
           {showPageHeader && <PageHeader docTitle={docTitle} />}
           {showToolbar && (
-            <Toolbar style={{ 'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 } }} handleSort={onSort} handleSearch={onSearch} columns={headers} handleRowHeightChange={RowHeight} />
+            <Toolbar style={{ 'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 } }} handleSort={onSort} handleSearch={onSearch} columns={columns} handleRowHeightChange={RowHeight} handleFilter={filter} handleHideColumns={updateVisibility} />
           )}
         </div>
         <div style={{
@@ -86,14 +99,14 @@ function DataSheet({
         <div className="datasheet-base">
           <div className="datasheet-body">
             <TableRow>
-              <TableHeader headers={headers} />
+              <TableHeader headers={columns} />
             </TableRow>
             {
               data.map((rowObj: any, i1: any) => (
                 <TableRow key={i1 as any}>
                   <TableData>
                     {
-                      renderRow(rowObj, searchTerm, rowHeight)
+                      renderRow(rowObj, searchTerm, rowHeight, columns)
                     }
                   </TableData>
                 </TableRow>
