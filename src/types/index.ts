@@ -6,6 +6,7 @@ interface GlobalStateContextVals {
 }
 
 interface HeaderKey {
+  isVisible: boolean;
   fieldName: string;
   headerName: string;
 }

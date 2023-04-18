@@ -51,3 +51,20 @@ export function filterData(data: Data[], fieldName: string, operator: Operator, 
     }
   });
 }
+export function groupByFunc<T extends Record<string, unknown>>(
+  array: T[],
+  fieldName: keyof T,
+): Record<string, T[]> {
+  const groups: Record<string, T[]> = {};
+  array.forEach((item) => {
+    const value = item[fieldName];
+    if (value && typeof value === 'string') {
+      if (!groups[value]) {
+        groups[value] = [];
+      }
+      groups[value].push(item);
+    }
+  });
+
+  return groups;
+}

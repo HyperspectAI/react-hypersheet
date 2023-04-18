@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import {
@@ -18,7 +20,8 @@ interface Props {
   columns: any,
   handleRowHeightChange: any,
   handleFilter: any,
-  handleHideColumns: any
+  handleHideColumns: any,
+  handleGrouping: any,
 }
 function Toolbar({
   style,
@@ -28,10 +31,12 @@ function Toolbar({
   handleRowHeightChange,
   handleFilter,
   handleHideColumns,
+  handleGrouping,
 }: Props) {
   const [openSortModal, setOpenSortModal] = useState(false);
   const [openRowModal, setOpenRowModal] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [openGroupModal, setOpenGroupModal] = useState(false);
   const [openHideFields, setOpenHideField] = useState(false);
   const [selectSortField, setSelectSortField] = useState('');
   const [rowHeight] = useState<number>(50);
@@ -55,7 +60,6 @@ function Toolbar({
     handleSort(selectSortField, order);
   };
   const handleFilterData = () => {
-    console.log('filterData', filterData);
     handleFilter(filterData?.fieldName, filterData?.operator, filterData?.value);
   };
 
@@ -66,11 +70,12 @@ function Toolbar({
           <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
           Hide fields
           {openHideFields ? (
-            <select id="field-select" value={selectSortField} onChange={(e) => handleHideColumns(e.target.value, false)}>
-              {columns?.map((ele: any) => (
-                <option value={ele?.fieldName}>{ele?.fieldName}</option>
-              ))}
-            </select>
+            columns?.map((ele: any) => (
+              <>
+                <span>{ele?.fieldName}</span>
+                <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
+              </>
+            ))
           ) : null}
         </p>
         <p className="toolbar-item">
@@ -94,8 +99,15 @@ function Toolbar({
           ) : null}
         </p>
         <p className="toolbar-item">
-          <MdCalendarViewMonth />
+          <MdCalendarViewMonth onClick={() => { setOpenGroupModal(!openGroupModal); }} aria-hidden="true" />
           Group
+          {openGroupModal ? (
+            columns?.map((ele: any) => (
+              <span onClick={() => handleGrouping(ele?.fieldName)}>
+                {ele?.fieldName}
+              </span>
+            ))
+          ) : null}
         </p>
         <p className="toolbar-item">
           <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />

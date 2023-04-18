@@ -10,7 +10,7 @@ import TableRow from './TableRow';
 import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
-import { filterData, sortFunc } from './utils';
+import { filterData, groupByFunc, sortFunc } from './utils';
 
 interface Props {
   showPageHeader: boolean;
@@ -82,14 +82,26 @@ function DataSheet({
     newColumns[index].isVisible = value;
     setColumns(newColumns);
   }
-
+  function groupByField(fieldName: string): void {
+    const newGroupData = groupByFunc(data, fieldName);
+    console.log('newGroupData', newGroupData);
+  }
   return (
     <GlobalStateProvider>
       <>
         <div className="fixed-top">
           {showPageHeader && <PageHeader docTitle={docTitle} />}
           {showToolbar && (
-            <Toolbar style={{ 'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 } }} handleSort={onSort} handleSearch={onSearch} columns={columns} handleRowHeightChange={RowHeight} handleFilter={filter} handleHideColumns={updateVisibility} />
+            <Toolbar
+              style={{ 'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 } }}
+              handleSort={onSort}
+              handleSearch={onSearch}
+              columns={columns}
+              handleRowHeightChange={RowHeight}
+              handleFilter={filter}
+              handleHideColumns={updateVisibility}
+              handleGrouping={groupByField}
+            />
           )}
         </div>
         <div style={{
