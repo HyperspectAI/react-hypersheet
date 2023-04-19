@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState } from 'react';
@@ -27,12 +29,12 @@ const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: 
         if (typeof rowObj[k] === 'string') {
           return (
             columns[index]?.isVisible && (
-            <Cell
-              value={rowObj[k]}
-              searchTerms={searchTerm}
-              key={rowObj[k]}
-              rowHeights={rowHeight}
-            />
+              <Cell
+                value={rowObj[k]}
+                searchTerms={searchTerm}
+                key={rowObj[k]}
+                rowHeights={rowHeight}
+              />
             )
           );
         }
@@ -41,6 +43,37 @@ const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: 
     }
   </>
 );
+
+const renderGroupRow = (rowObj: any) => (
+  <>
+    {
+      Object.entries(rowObj).map((key: any) => (
+        key.map((ele: any) => (
+          <KeyValueList data={ele} />
+        ))
+      ))
+    }
+  </>
+);
+
+// eslint-disable-next-line react/prop-types
+function KeyValueList({ data }: any) {
+  const entries = Object?.entries(data);
+  return (
+    <div>
+      {entries?.length && entries?.map(([key, values]: any) => (
+        <div key={key}>
+          <strong>{key}: </strong>
+          {typeof values === 'object' ? (
+            <KeyValueList data={values} />
+          ) : (
+            <span>{values}</span>
+          )}
+        </div >
+      ))}
+    </div >
+  );
+}
 
 const calculateTableBodyPaddingSpace = (isPageHeader: boolean, isPageToolbar: boolean): string => {
   let val = 0;
@@ -58,6 +91,7 @@ function DataSheet({
   docTitle,
 }: Props) {
   const [data, setData] = useState<any>(rows);
+  const [groupData, setGroupData] = useState<any>(rows);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
   const [columns, setColumns] = useState(headers);
@@ -65,16 +99,20 @@ function DataSheet({
     // eslint-disable-next-line @typescript-eslint/comma-spacing
     const sortData = sortFunc(data, filterOption, option);
     setData(sortData);
+    setGroupData({});
   }
   function onSearch(searchValue: string): void {
     setSearchTerm(searchValue);
+    setGroupData({});
   }
   function RowHeight(height: number): void {
     setRowHeight(height);
+    setGroupData({});
   }
   function filter(fieldName: string, operator: any, value: any): void {
     const newFilterData = filterData(data, fieldName, operator, value);
     setData(newFilterData);
+    setGroupData({});
   }
   function updateVisibility(columnName: string, value: boolean): void {
     const index = columns.findIndex((column) => column.fieldName === columnName);
@@ -84,7 +122,7 @@ function DataSheet({
   }
   function groupByField(fieldName: string): void {
     const newGroupData = groupByFunc(data, fieldName);
-    console.log('newGroupData', newGroupData);
+    setGroupData(newGroupData);
   }
   return (
     <GlobalStateProvider>
@@ -113,6 +151,7 @@ function DataSheet({
             <TableRow>
               <TableHeader headers={columns} />
             </TableRow>
+            {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null}
             {
               data.map((rowObj: any, i1: any) => (
                 <TableRow key={i1 as any}>
