@@ -23,7 +23,14 @@ interface Props {
   docTitle: string;
 }
 
-const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: any, handleCellChange: any, rowIndex: any) => (
+const renderRow = (
+  rowObj: any,
+  searchTerm: string,
+  rowHeight: number,
+  columns: any,
+  handleCellChange: any,
+  rowIndex: number,
+) => (
   <>
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
