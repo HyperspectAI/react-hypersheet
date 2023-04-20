@@ -69,14 +69,16 @@ function Toolbar({
         <p className="toolbar-item">
           <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
           Hide fields
-          {openHideFields ? (
-            columns?.map((ele: any) => (
-              <>
-                <span>{ele?.fieldName}</span>
-                <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
-              </>
-            ))
-          ) : null}
+          <div className="test">
+            {openHideFields ? (
+              columns?.map((ele: any) => (
+                <div className="abc">
+                  <span>{ele?.fieldName}</span>
+                  <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
+                </div>
+              ))
+            ) : null}
+          </div>
         </p>
         <p className="toolbar-item">
           <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
@@ -94,7 +96,7 @@ function Toolbar({
                 ))}
               </select>
               <input type="text" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
-              <button onClick={handleFilterData}>Filter </button>
+              <button onClick={handleFilterData}>Filter</button>
             </>
           ) : null}
         </p>
@@ -130,8 +132,7 @@ function Toolbar({
           {openRowModal ? (
             <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
               {rowHeightOptions.map((option) => (
-                // eslint-disable-next-line react/jsx-tag-spacing
-                <option key={option} value={option} >
+                <option key={option} value={option}>
                   {option}
                   pixels
                 </option>
