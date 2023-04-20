@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable react/jsx-no-bind */
@@ -22,7 +23,7 @@ interface Props {
   docTitle: string;
 }
 
-const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: any) => (
+const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: any, handleCellChange: any, rowIndex: any) => (
   <>
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
@@ -34,6 +35,9 @@ const renderRow = (rowObj: any, searchTerm: string, rowHeight: number, columns: 
                 searchTerms={searchTerm}
                 key={rowObj[k]}
                 rowHeights={rowHeight}
+                handleCellChange={handleCellChange}
+                columnName={k}
+                rowIndex={rowIndex}
               />
             )
           );
@@ -124,6 +128,16 @@ function DataSheet({
     const newGroupData = groupByFunc(data, fieldName);
     setGroupData(newGroupData);
   }
+  const handleCellChange = (
+    rowIndex: number,
+    columnName: string,
+    value: string,
+  ) => {
+    const updatedRows = [...rows];
+    updatedRows[rowIndex][columnName] = value;
+    setData(updatedRows);
+  };
+
   return (
     <GlobalStateProvider>
       <>
@@ -157,7 +171,7 @@ function DataSheet({
                 <TableRow key={i1 as any}>
                   <TableData>
                     {
-                      renderRow(rowObj, searchTerm, rowHeight, columns)
+                      renderRow(rowObj, searchTerm, rowHeight, columns, handleCellChange, i1)
                     }
                   </TableData>
                 </TableRow>
