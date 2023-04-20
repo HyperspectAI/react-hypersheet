@@ -88,6 +88,8 @@
   },
   "dependencies": {
     "clsx": "^1.2.1",
-    "react-icons": "^4.8.0"
+    "jss-plugin-nested": "^10.10.0",
+    "react-icons": "^4.8.0",
+    "react-jss": "^10.10.0"
   }
 }

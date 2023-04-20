@@ -9,6 +9,7 @@ import {
   MdOutlineSort,
   MdSearch,
 } from 'react-icons/md';
+import useStyles from './styles';
 
 type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 interface Props {
@@ -33,6 +34,7 @@ function Toolbar({
   handleHideColumns,
   handleGrouping,
 }: Props) {
+  const classes = useStyles();
   const [openSortModal, setOpenSortModal] = useState(false);
   const [openRowModal, setOpenRowModal] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
@@ -64,9 +66,9 @@ function Toolbar({
   };
 
   return (
-    <div className="datasheet-toolbar" style={style['datasheet-toolbar']}>
-      <div className="toolbar-list">
-        <p className="toolbar-item">
+    <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
+      <div className={`${classes.dataSheetToolbar} toolbarList`}>
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
           Hide fields
           <div className="test">
@@ -80,7 +82,7 @@ function Toolbar({
             ) : null}
           </div>
         </p>
-        <p className="toolbar-item">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
           Filter
           {openFilterModal ? (
@@ -100,7 +102,7 @@ function Toolbar({
             </>
           ) : null}
         </p>
-        <p className="toolbar-item">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdCalendarViewMonth onClick={() => { setOpenGroupModal(!openGroupModal); }} aria-hidden="true" />
           Group
           {openGroupModal ? (
@@ -111,7 +113,7 @@ function Toolbar({
             ))
           ) : null}
         </p>
-        <p className="toolbar-item">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />
           Sort
           {openSortModal ? (
@@ -126,7 +128,7 @@ function Toolbar({
             </>
           ) : null}
         </p>
-        <p className="toolbar-item" onClick={() => { setOpenRowModal(!openRowModal); }} aria-hidden="true">
+        <p className={`${classes.dataSheetToolbar} toolbarItem`} onClick={() => { setOpenRowModal(!openRowModal); }} aria-hidden="true">
           <MdCalendarViewMonth />
           Row Height
           {openRowModal ? (

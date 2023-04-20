@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { renderHighlightedText } from './utils';
+import useStyles from './styles';
 
 interface Props {
   value: string;
@@ -19,6 +20,7 @@ function Cell({
   columnName,
   rowIndex,
 }:Props) {
+  const classes = useStyles();
   const [isSelected, setIsSelected] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
   const [currentValue, setCurrentValue] = React.useState(value);
@@ -37,7 +39,7 @@ function Cell({
   if (editing) {
     return (
       <input
-        className={clsx('table-cell', isSelected && 'selected-table-cell')}
+        className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
         type="text"
         value={currentValue}
         onChange={handleChange}
@@ -51,7 +53,7 @@ function Cell({
   return (
     <div
       style={{ height: rowHeights }}
-      className={clsx('table-cell', isSelected && 'selected-table-cell')}
+      className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
       onClick={() => setIsSelected(true)}
       role="none"
       // eslint-disable-next-line react/no-danger

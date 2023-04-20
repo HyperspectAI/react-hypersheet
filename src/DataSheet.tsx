@@ -5,6 +5,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import useStyles from './styles';
 import { HeaderKey } from './types';
 import { GlobalStateProvider } from './context';
 import PageHeader from './PageHeader';
@@ -144,11 +145,11 @@ function DataSheet({
     updatedRows[rowIndex][columnName] = value;
     setData(updatedRows);
   };
-
+  const classes = useStyles();
   return (
     <GlobalStateProvider>
       <>
-        <div className="fixed-top">
+        <div className={classes.fixedTop}>
           {showPageHeader && <PageHeader docTitle={docTitle} />}
           {showToolbar && (
             <Toolbar
@@ -167,8 +168,8 @@ function DataSheet({
           paddingTop: calculateTableBodyPaddingSpace(showPageHeader, showToolbar),
         }}
         />
-        <div className="datasheet-base">
-          <div className="datasheet-body">
+        <div className={classes.dataSheetBase}>
+          <div className={classes.dataSheetBody}>
             <TableRow>
               <TableHeader headers={columns} />
             </TableRow>

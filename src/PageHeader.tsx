@@ -1,6 +1,8 @@
 import React from 'react';
 import { MdOutlineInsertDriveFile } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import useStyles from './styles';
 
 interface Props {
   docTitle: string;
@@ -16,10 +18,11 @@ function PageHeader({
   docTitle,
   style,
 }: Props) {
+  const classes = useStyles();
   return (
-    <div className="page-header" style={style['page-header']}>
-      <div className="container d-flex align-items-center">
-        <div className="page-title d-flex align-items-center">
+    <div className={classes.pageHeader} style={style['page-header']}>
+      <div className={clsx(classes.container, classes.dFlex, classes.alignItemsCenter)}>
+        <div className={clsx(`${classes.pageHeader} pageTitle`, classes.dFlex, classes.alignItemsCenter)}>
           <MdOutlineInsertDriveFile
             color="white"
             style={{
