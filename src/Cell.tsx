@@ -19,7 +19,7 @@ function Cell({
   handleCellChange,
   columnName,
   rowIndex,
-}:Props) {
+}: Props) {
   const classes = useStyles();
   const [isSelected, setIsSelected] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
@@ -38,15 +38,18 @@ function Cell({
   };
   if (editing) {
     return (
-      <input
-        className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
-        type="text"
-        value={currentValue}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
-      />
+      <div className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}>
+        <input
+          type="text"
+          value={currentValue}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus
+          className={clsx(classes.selectedTableCellInput)}
+        />
+      </div>
+
     );
   }
 

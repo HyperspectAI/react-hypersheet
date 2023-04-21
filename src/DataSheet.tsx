@@ -89,7 +89,7 @@ function KeyValueList({ data }: any) {
 
 const calculateTableBodyPaddingSpace = (isPageHeader: boolean, isPageToolbar: boolean): string => {
   let val = 0;
-  if (isPageHeader && isPageToolbar) return '98px';
+  if (isPageHeader && isPageToolbar) return '135px';
   if (isPageHeader) val += 60;
   if (isPageToolbar) val += 50;
   return val.toString().concat('px');

@@ -15,6 +15,9 @@ const styles = {
   alignItemsCenter: {
     alignItems: 'center',
   },
+  justifySpaceBetween: {
+    justifyContent: 'space-between',
+  },
   textLeft: {
     textAlign: 'left',
   },
@@ -103,7 +106,7 @@ const styles = {
   },
   tableCell: {
     border: 'solid 1px #e1e1e1',
-    minWidth: '180px',
+    minWidth: '200px',
     display: 'table-cell',
     padding: '6px',
     borderLeft: 'none',
@@ -112,6 +115,40 @@ const styles = {
   },
   selectedTableCell: {
     outline: 'solid 1px black',
+  },
+  selectedTableCellInput: {
+    outline: 0,
+    border: 0,
+  },
+  dropdownList: {
+    position: 'absolute',
+    background: '#fff',
+    width: '150px',
+    left: '0',
+    padding: '10px',
+    borderRadius: '8px',
+    boxShadow: '0 0 1px rgba(0,0,0,0.24), 0 0 2px rgba(0,0,0,0.16), 0 3px 4px rgba(0,0,0,0.06), 0 6px 8px rgba(0,0,0,0.06), 0 12px 16px rgba(0,0,0,0.08), 0 18px 32px rgba(0,0,0,0.06)',
+    top: '40px',
+    '&.fieldDropdown': {
+      left: '10px',
+    },
+    '&.filterDropdown': {
+      left: '10px',
+      width: 'auto',
+    },
+  },
+  dropdownListItem: {
+    padding: '6px',
+    borderRadius: '3px',
+    cursor: 'pointer',
+    fontSize: '13px',
+    fontWeight: '500',
+    alignItems: 'center',
+    display: 'flex',
+    marginBottom: '5px',
+  },
+  checkboxLabel: {
+    marginLeft: '5px',
   },
 };
 

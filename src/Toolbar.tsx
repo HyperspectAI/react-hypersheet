@@ -2,13 +2,17 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import {
   MdRemoveRedEye,
   MdFilterList,
   MdCalendarViewMonth,
   MdOutlineSort,
   MdSearch,
+  MdExpandMore,
+  MdFilterAlt,
 } from 'react-icons/md';
+import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import useStyles from './styles';
 
 type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
@@ -71,82 +75,132 @@ function Toolbar({
         <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
           Hide fields
-          <div className="test">
-            {openHideFields ? (
-              columns?.map((ele: any) => (
-                <div className="abc">
-                  <span>{ele?.fieldName}</span>
+          {openHideFields ? (
+            <div className={`${classes.dropdownList} fieldDropdown`}>
+              {columns?.map((ele: any) => (
+                <div className={clsx(classes.dropdownListItem)}>
                   <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
+                  <span className={`${classes.checkboxLabel}`}>{ele?.fieldName}</span>
                 </div>
-              ))
-            ) : null}
-          </div>
+              ))}
+            </div>
+          ) : null}
         </p>
         <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
           Filter
           {openFilterModal ? (
-            <>
-              <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
-                {columns?.map((ele: any) => (
-                  <option value={ele?.fieldName}>{ele?.fieldName}</option>
-                ))}
-              </select>
-              <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
-                {operators?.map((ele: any) => (
-                  <option value={ele}>{ele}</option>
-                ))}
-              </select>
-              <input type="text" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
-              <button onClick={handleFilterData}>Filter</button>
-            </>
+            <div className={`${classes.dropdownList} filterDropdown`}>
+              <div className="filter-row grid">
+                <div className="select-field">
+                  <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
+                    {columns?.map((ele: any) => (
+                      <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                    ))}
+                  </select>
+                  <MdExpandMore />
+                </div>
+
+                <div className="select-field">
+                  <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
+                    {operators?.map((ele: any) => (
+                      <option value={ele}>{ele}</option>
+                    ))}
+                  </select>
+                  <MdExpandMore />
+                </div>
+                <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
+                <div className="icon-button">
+                  <button>
+                    <MdFilterAlt onClick={handleFilterData} />
+                  </button>
+
+                </div>
+
+              </div>
+            </div>
           ) : null}
         </p>
         <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdCalendarViewMonth onClick={() => { setOpenGroupModal(!openGroupModal); }} aria-hidden="true" />
           Group
           {openGroupModal ? (
-            columns?.map((ele: any) => (
-              <span onClick={() => handleGrouping(ele?.fieldName)}>
-                {ele?.fieldName}
-              </span>
-            ))
+            <div className={`${classes.dropdownList} fieldDropdown`}>
+              {columns?.map((ele: any) => (
+                <span
+                  onClick={() => handleGrouping(ele?.fieldName)}
+                  className={clsx(classes.dropdownListItem)}
+                >
+                  {ele?.fieldName}
+                </span>
+              ))}
+            </div>
           ) : null}
         </p>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+        <p className={`${classes.dataSheetToolbar}`}>
           <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />
           Sort
           {openSortModal ? (
-            <>
-              <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
-                {columns?.map((ele: any) => (
-                  <option value={ele?.fieldName}>{ele?.fieldName}</option>
-                ))}
-              </select>
-              <button onClick={() => handleOrderChange('asc')}>Ascending</button>
-              <button onClick={() => handleOrderChange('desc')}>Descending</button>
-            </>
+            <div className={`${classes.dropdownList} filterDropdown`}>
+              <div className="sort-row grid">
+                <div className="select-field">
+                  <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
+                    {columns?.map((ele: any) => (
+                      <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                    ))}
+                  </select>
+                  <MdExpandMore />
+                </div>
+                <div className="icon-button">
+                  <button onClick={() => handleOrderChange('asc')}>
+                    <TbSortAscending />
+                  </button>
+                </div>
+                <div className="icon-button">
+                  <button onClick={() => handleOrderChange('desc')}>
+                    <TbSortDescending />
+                  </button>
+                </div>
+
+              </div>
+            </div>
           ) : null}
         </p>
         <p className={`${classes.dataSheetToolbar} toolbarItem`} onClick={() => { setOpenRowModal(!openRowModal); }} aria-hidden="true">
           <MdCalendarViewMonth />
           Row Height
           {openRowModal ? (
-            <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
-              {rowHeightOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                  pixels
-                </option>
-              ))}
-            </select>
+            <div className={`${classes.dropdownList} fieldDropdown`}>
+              <div className="select-field">
+                <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
+                  {rowHeightOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                      pixels
+                    </option>
+                  ))}
+                </select>
+                <MdExpandMore />
+              </div>
+            </div>
           ) : null}
         </p>
-        <p className="toolbar-item">
+        {/* <p className="toolbar-item">
           <MdSearch />
           <input type="text" onChange={(e) => handleSearch(e.target.value)} />
           Search
-        </p>
+        </p> */}
+        <div className="search-box">
+          <input
+            placeholder="Search..."
+            type="text"
+            className="search-field"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <button type="submit" className="search-icon">
+            <MdSearch />
+          </button>
+        </div>
       </div>
     </div>
   );
