@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-tag-spacing */
@@ -14,7 +15,7 @@ import TableRow from './TableRow';
 import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
-import { filterData, groupByFunc, sortFunc } from './utils';
+import { filterData, groupByColumnName, sortFunc } from './utils';
 
 interface Props {
   showPageHeader: boolean;
@@ -133,7 +134,7 @@ function DataSheet({
     setColumns(newColumns);
   }
   function groupByField(fieldName: string): void {
-    const newGroupData = groupByFunc(data, fieldName);
+    const newGroupData = groupByColumnName(data, fieldName);
     setGroupData(newGroupData);
   }
   const handleCellChange = (
@@ -173,17 +174,46 @@ function DataSheet({
             <TableRow>
               <TableHeader headers={columns} />
             </TableRow>
-            {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null}
+            {/* {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null} */}
+            {groupData.length && groupData?.map((group: any) => (
+              <div key={group.groupName}>
+                <h2>{group.groupName}</h2>
+                <ul>
+                  <div className="header">
+                    {group?.items?.length && group.items.map((item: any, index: number) => (
+                      // eslint-disable-next-line react/no-array-index-key, array-callback-return
+                      Object.keys(item).map((key) => (
+                        <div className="testt">
+                          <li>{`${key}`}</li>
+                        </div>
+                      ))
+                    ))}
+                  </div>
+                  <div className="Cell">
+                    {group?.items?.length && group.items.map((item: any, index: number) => (
+                      // eslint-disable-next-line react/no-array-index-key, array-callback-return
+                      Object.keys(item).map((key) => (
+                        <div className="testt2">
+                          <li>{`${item[key]}`}</li>
+                        </div>
+                      ))
+                    ))}
+                  </div>
+                </ul>
+              </div>
+            ))}
             {
-              data.map((rowObj: any, i1: any) => (
-                <TableRow key={i1 as any}>
-                  <TableData>
-                    {
-                      renderRow(rowObj, searchTerm, rowHeight, columns, handleCellChange, i1)
-                    }
-                  </TableData>
-                </TableRow>
-              ))
+              data?.length ? (
+                data.map((rowObj: any, i1: any) => (
+                  <TableRow key={i1 as any}>
+                    <TableData>
+                      {
+                        renderRow(rowObj, searchTerm, rowHeight, columns, handleCellChange, i1)
+                      }
+                    </TableData>
+                  </TableRow>
+                ))
+              ) : <span>Data Not Found</span>
             }
 
           </div>

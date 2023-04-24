@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 /* eslint-disable no-else-return */
 /* eslint-disable arrow-body-style */
@@ -67,4 +68,36 @@ export function groupByFunc<T extends Record<string, unknown>>(
   });
 
   return groups;
+}
+
+interface Data1 {
+  [key: string]: any;
+}
+
+export function groupByColumnName(data: Data1[], columnName: string): any[] {
+  const groups: any = {};
+
+  // Group the data by the column name
+  data.forEach((item: any) => {
+    const groupValue = item[columnName];
+    if (!groups[groupValue]) {
+      groups[groupValue] = [];
+    }
+    groups[groupValue].push(item);
+  });
+
+  // Convert the grouped data into an array of objects
+  const result: any[] = [];
+  for (const groupName in groups) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (groups.hasOwnProperty(groupName)) {
+      result.push({
+        // eslint-disable-next-line object-shorthand
+        groupName: groupName,
+        items: groups[groupName],
+      });
+    }
+  }
+
+  return result;
 }

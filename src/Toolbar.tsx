@@ -140,7 +140,7 @@ function Toolbar({
             </div>
           ) : null}
         </p>
-        <p className={`${classes.dataSheetToolbar}`}>
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />
           Sort
           {openSortModal ? (
