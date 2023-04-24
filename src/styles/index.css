@@ -106,3 +106,37 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
+
+
+.table-row-group {
+    display: table;
+    border: solid 1px #e1e1e1;
+    width: 100%;
+}
+
+.table-group-row{
+    display: table-row;
+    border: solid 1px #e1e1e1;
+    padding: 6px;
+    font-size: 13px;
+    border-top: none;
+    border-left: none;
+}
+
+.table-group-cell{
+    border: solid 1px #e1e1e1;
+    display: table-cell;
+    padding: 6px;
+    font-size: 13px;
+    border-top: none;
+    border-left: none;
+}
+
+.table-group-header {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.group-selected-header {
+    font-size: 16px;
+}

@@ -176,30 +176,30 @@ function DataSheet({
             </TableRow>
             {/* {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null} */}
             {groupData.length && groupData?.map((group: any) => (
-              <div key={group.groupName}>
-                <h2>{group.groupName}</h2>
-                <ul>
-                  <div className="header">
+              <div key={group.groupName} className={classes.tableRow}>
+                <h2 className="group-selected-header">{group.groupName}</h2>
+                <div className="table-row-group">
+                  <div className="table-group-row">
                     {group?.items?.length && group.items.map((item: any, index: number) => (
                       // eslint-disable-next-line react/no-array-index-key, array-callback-return
                       Object.keys(item).map((key) => (
-                        <div className="testt">
-                          <li>{`${key}`}</li>
+                        <div className="table-group-cell">
+                          <div className="table-group-header">{`${key}`}</div>
                         </div>
                       ))
                     ))}
                   </div>
-                  <div className="Cell">
+                  <div className="table-group-row">
                     {group?.items?.length && group.items.map((item: any, index: number) => (
                       // eslint-disable-next-line react/no-array-index-key, array-callback-return
                       Object.keys(item).map((key) => (
-                        <div className="testt2">
-                          <li>{`${item[key]}`}</li>
+                        <div className="table-group-cell">
+                          <div>{`${item[key]}`}</div>
                         </div>
                       ))
                     ))}
                   </div>
-                </ul>
+                </div>
               </div>
             ))}
             {
