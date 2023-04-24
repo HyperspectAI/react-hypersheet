@@ -67,7 +67,9 @@ function Toolbar({
     handleSort(selectSortField, order);
   };
   const handleFilterData = () => {
-    handleFilter(filterData?.fieldName, filterData?.operator, filterData?.value);
+    if (filterData?.fieldName !== '' && filterData?.operator !== '' && filterData?.value !== '') {
+      handleFilter(filterData?.fieldName, filterData?.operator, filterData?.value);
+    }
   };
 
   return (
