@@ -45,7 +45,7 @@ function Toolbar({
   const [openGroupModal, setOpenGroupModal] = useState(false);
   const [openHideFields, setOpenHideField] = useState(false);
   const [selectSortField, setSelectSortField] = useState('');
-  const [rowHeight] = useState<number>(50);
+  const [rowHeight, setRowHeight] = useState<number>(50);
   const [rowHeightOptions] = useState<number[]>([40, 50, 60, 70]);
   const [filterData, setFilterData] = useState({
     fieldName: '',
@@ -59,6 +59,7 @@ function Toolbar({
 
   const handleRowHeight = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newHeight = parseInt(event.target.value, 10);
+    setRowHeight(parseInt(event.target.value, 10));
     handleRowHeightChange(newHeight);
   };
 
