@@ -87,7 +87,7 @@ const styles = {
     width: '100%',
   },
   dataSheetBody: {
-    display: 'table-row-group',
+    // display: 'table-row-group',
   },
   tableHeader: {
     background: '#f2f2f2',

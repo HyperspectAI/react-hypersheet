@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable @typescript-eslint/comma-dangle */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -56,37 +58,6 @@ const renderRow = (
     }
   </>
 );
-
-const renderGroupRow = (rowObj: any) => (
-  <>
-    {
-      Object.entries(rowObj).map((key: any) => (
-        key.map((ele: any) => (
-          <KeyValueList data={ele} />
-        ))
-      ))
-    }
-  </>
-);
-
-// eslint-disable-next-line react/prop-types
-function KeyValueList({ data }: any) {
-  const entries = Object?.entries(data);
-  return (
-    <div>
-      {entries?.length && entries?.map(([key, values]: any) => (
-        <div key={key}>
-          <strong>{key}: </strong>
-          {typeof values === 'object' ? (
-            <KeyValueList data={values} />
-          ) : (
-            <span>{values}</span>
-          )}
-        </div >
-      ))}
-    </div >
-  );
-}
 
 const calculateTableBodyPaddingSpace = (isPageHeader: boolean, isPageToolbar: boolean): string => {
   let val = 0;
@@ -147,6 +118,73 @@ function DataSheet({
     setData(updatedRows);
   };
   const classes = useStyles();
+
+  interface Item {
+    [key: string]: any;
+  }
+  interface Group {
+    items?: Item[];
+  }
+  function renderItems(group?: Group) {
+    if (group && group.items && group.items.length > 0) {
+      const traverseObject = (obj: any): string => {
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
+          const values = Object.values(obj)
+            .map((value) => traverseObject(value))
+            .filter((value) => value !== '');
+          return values.join(', ');
+        } else {
+          return `${obj}`;
+        }
+      };
+
+      return group.items.map((item: Item, index: number) => (
+        <div className="table-group-row">
+          {Object.keys(item).map((key) => {
+            const value = item[key];
+            let displayValue: string;
+            if (typeof value === 'object') {
+              displayValue = traverseObject(value);
+            } else if (Array.isArray(value)) {
+              displayValue = value.join(', ');
+            } else {
+              displayValue = `${value}`;
+            }
+            return (
+              <div key={key} className="table-group-cell">
+                <div>{displayValue}</div>
+              </div>
+            );
+          })}
+        </div>
+      ));
+    } else {
+      return null;
+    }
+  }
+
+  function renderUniqueKeys(group: any): JSX.Element[] {
+    const uniqueKeys = new Set<string>();
+
+    return group?.items?.length
+      ? group.items.map((item: any) =>
+        // eslint-disable-next-line implicit-arrow-linebreak
+        Object.keys(item).map((key) => {
+          if (!uniqueKeys.has(key)) {
+            uniqueKeys.add(key);
+            return (
+              <div className="table-group-cell" key={key}>
+                <div className="table-group-header">{`${key}`}</div>
+              </div>
+            );
+          }
+          return null;
+        })
+        // eslint-disable-next-line function-paren-newline
+      )
+      : [];
+  }
+
   return (
     <GlobalStateProvider>
       <>
@@ -172,7 +210,7 @@ function DataSheet({
         <div className={classes.dataSheetBase}>
           <div className={classes.dataSheetBody}>
             <TableRow>
-              <TableHeader headers={columns} />
+              <TableHeader headers={headers} />
             </TableRow>
             {/* {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null} */}
             {groupData.length && groupData?.map((group: any) => (
@@ -180,25 +218,9 @@ function DataSheet({
                 <h2 className="group-selected-header">{group.groupName}</h2>
                 <div className="table-row-group">
                   <div className="table-group-row">
-                    {group?.items?.length && group.items.map((item: any, index: number) => (
-                      // eslint-disable-next-line react/no-array-index-key, array-callback-return
-                      Object.keys(item).map((key) => (
-                        <div className="table-group-cell">
-                          <div className="table-group-header">{`${key}`}</div>
-                        </div>
-                      ))
-                    ))}
+                    {renderUniqueKeys(group)}
                   </div>
-                  <div className="table-group-row">
-                    {group?.items?.length && group.items.map((item: any, index: number) => (
-                      // eslint-disable-next-line react/no-array-index-key, array-callback-return
-                      Object.keys(item).map((key) => (
-                        <div className="table-group-cell">
-                          <div>{`${item[key]}`}</div>
-                        </div>
-                      ))
-                    ))}
-                  </div>
+                  {renderItems(group)}
                 </div>
               </div>
             ))}
