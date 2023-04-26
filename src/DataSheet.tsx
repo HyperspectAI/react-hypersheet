@@ -75,7 +75,7 @@ function DataSheet({
   docTitle,
 }: Props) {
   const [data, setData] = useState<any>(rows);
-  const [groupData, setGroupData] = useState<any>(rows);
+  const [groupData, setGroupData] = useState<any>();
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
   const [columns, setColumns] = useState(headers);
@@ -172,6 +172,7 @@ function DataSheet({
         Object.keys(item).map((key) => {
           if (!uniqueKeys.has(key)) {
             uniqueKeys.add(key);
+            console.log('uniqueKeys', uniqueKeys);
             return (
               <div className="table-group-cell" key={key}>
                 <div className="table-group-header">{`${key}`}</div>
@@ -209,34 +210,40 @@ function DataSheet({
         />
         <div className={classes.dataSheetBase}>
           <div className={classes.dataSheetBody}>
-            <TableRow>
-              <TableHeader headers={headers} />
-            </TableRow>
-            {/* {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null} */}
-            {groupData.length && groupData?.map((group: any) => (
-              <div key={group.groupName} className={classes.tableRow}>
-                <h2 className="group-selected-header">{group.groupName}</h2>
-                <div className="table-row-group">
-                  <div className="table-group-row">
-                    {renderUniqueKeys(group)}
+            {groupData.length
+              ? (
+                groupData?.map((group: any) => (
+                  <div key={group.groupName} className={classes.tableRow}>
+                    <h2 className="group-selected-header">{group.groupName}</h2>
+                    <div className="table-row-group">
+                      <div className="table-group-row">
+                        {renderUniqueKeys(group)}
+                      </div>
+                      {renderItems(group)}
+                    </div>
                   </div>
-                  {renderItems(group)}
-                </div>
-              </div>
-            ))}
-            {
-              data?.length ? (
-                data.map((rowObj: any, i1: any) => (
-                  <TableRow key={i1 as any}>
-                    <TableData>
-                      {
-                        renderRow(rowObj, searchTerm, rowHeight, columns, handleCellChange, i1)
-                      }
-                    </TableData>
-                  </TableRow>
                 ))
-              ) : <span>Data Not Found</span>
-            }
+              ) : (
+                <>
+                  <TableRow>
+                    <TableHeader headers={headers} />
+                  </TableRow>
+                  {/* {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null} */}
+                  {
+                    data?.length ? (
+                      data.map((rowObj: any, i1: any) => (
+                        <TableRow key={i1 as any}>
+                          <TableData>
+                            {
+                              renderRow(rowObj, searchTerm, rowHeight, columns, handleCellChange, i1)
+                            }
+                          </TableData>
+                        </TableRow>
+                      ))
+                    ) : <span>Data Not Found</span>
+                  }
+                </>
+              )}
 
           </div>
         </div>
