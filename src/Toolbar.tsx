@@ -14,6 +14,7 @@ import {
 } from 'react-icons/md';
 import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import useStyles from './styles';
+import Tooltip from './high-order-component/tooltip';
 
 type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
   handleFilter: any,
   handleHideColumns: any,
   handleGrouping: any,
+  handleDownloadData: any,
 }
 function Toolbar({
   style,
@@ -37,6 +39,7 @@ function Toolbar({
   handleFilter,
   handleHideColumns,
   handleGrouping,
+  handleDownloadData,
 }: Props) {
   const classes = useStyles();
   const [openSortModal, setOpenSortModal] = useState(false);
@@ -75,135 +78,143 @@ function Toolbar({
   return (
     <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
       <div className={`${classes.dataSheetToolbar} toolbarList`}>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
-          Hide fields
-          {openHideFields ? (
-            <div className={`${classes.dropdownList} fieldDropdown`}>
-              {columns?.map((ele: any) => (
-                <div className={clsx(classes.dropdownListItem)}>
-                  <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
-                  <span className={`${classes.checkboxLabel}`}>{ele?.fieldName}</span>
+        <Tooltip key="hideFields" content="This is hidden field menu you can hide unhide columns vise fiels">
+          <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+            <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
+            Hide fields
+            {openHideFields ? (
+              <div className={`${classes.dropdownList} fieldDropdown`}>
+                {columns?.map((ele: any) => (
+                  <div className={clsx(classes.dropdownListItem)}>
+                    <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
+                    <span className={`${classes.checkboxLabel}`}>{ele?.fieldName}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </p>
+        </Tooltip>
+        <Tooltip key="Filter" content="This is hidden filter menu you can filter data columns vise fiels">
+          <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+            <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
+            Filter
+            {openFilterModal ? (
+              <div className={`${classes.dropdownList} filterDropdown`}>
+                <div className="filter-row grid">
+                  <div className="select-field">
+                    <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
+                      {columns?.map((ele: any) => (
+                        <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                      ))}
+                    </select>
+                    <MdExpandMore />
+                  </div>
+
+                  <div className="select-field">
+                    <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
+                      {operators?.map((ele: any) => (
+                        <option value={ele}>{ele}</option>
+                      ))}
+                    </select>
+                    <MdExpandMore />
+                  </div>
+                  <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
+                  <div className="icon-button">
+                    <button>
+                      <MdFilterAlt onClick={handleFilterData} />
+                    </button>
+
+                  </div>
+
                 </div>
-              ))}
-            </div>
-          ) : null}
-        </p>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
-          Filter
-          {openFilterModal ? (
-            <div className={`${classes.dropdownList} filterDropdown`}>
-              <div className="filter-row grid">
+              </div>
+            ) : null}
+          </p>
+        </Tooltip>
+        <Tooltip key="Group" content="This is group filter menu you can group data columns vise fiels">
+          <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+            <MdCalendarViewMonth onClick={() => { setOpenGroupModal(!openGroupModal); }} aria-hidden="true" />
+            Group
+            {openGroupModal ? (
+              <div className={`${classes.dropdownList} fieldDropdown`}>
+                {columns?.map((ele: any) => (
+                  <span
+                    onClick={() => handleGrouping(ele?.fieldName)}
+                    className={clsx(classes.dropdownListItem)}
+                  >
+                    {ele?.fieldName}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </p>
+        </Tooltip>
+        <Tooltip key="Sort" content="This is Sort filter menu you can Sort data columns vise fiels">
+          <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+            <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />
+            Sort
+            {openSortModal ? (
+              <div className={`${classes.dropdownList} filterDropdown`}>
+                <div className="sort-row grid">
+                  <div className="select-field">
+                    <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
+                      {columns?.map((ele: any) => (
+                        <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                      ))}
+                    </select>
+                    <MdExpandMore />
+                  </div>
+                  <div className="icon-button">
+                    <button onClick={() => handleOrderChange('asc')}>
+                      <TbSortAscending />
+                    </button>
+                  </div>
+                  <div className="icon-button">
+                    <button onClick={() => handleOrderChange('desc')}>
+                      <TbSortDescending />
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            ) : null}
+          </p>
+        </Tooltip>
+        <Tooltip key="RowHeight" content="This is row height filter menu you can row height columns vise fiels">
+          <p className={`${classes.dataSheetToolbar} toolbarItem`} onClick={() => { setOpenRowModal(!openRowModal); }} aria-hidden="true">
+            <MdCalendarViewMonth />
+            Row Height
+            {openRowModal ? (
+              <div className={`${classes.dropdownList} fieldDropdown`}>
                 <div className="select-field">
-                  <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
-                    {columns?.map((ele: any) => (
-                      <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                  <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
+                    {rowHeightOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                        pixels
+                      </option>
                     ))}
                   </select>
                   <MdExpandMore />
                 </div>
-
-                <div className="select-field">
-                  <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
-                    {operators?.map((ele: any) => (
-                      <option value={ele}>{ele}</option>
-                    ))}
-                  </select>
-                  <MdExpandMore />
-                </div>
-                <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
-                <div className="icon-button">
-                  <button>
-                    <MdFilterAlt onClick={handleFilterData} />
-                  </button>
-
-                </div>
-
               </div>
-            </div>
-          ) : null}
-        </p>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdCalendarViewMonth onClick={() => { setOpenGroupModal(!openGroupModal); }} aria-hidden="true" />
-          Group
-          {openGroupModal ? (
-            <div className={`${classes.dropdownList} fieldDropdown`}>
-              {columns?.map((ele: any) => (
-                <span
-                  onClick={() => handleGrouping(ele?.fieldName)}
-                  className={clsx(classes.dropdownListItem)}
-                >
-                  {ele?.fieldName}
-                </span>
-              ))}
-            </div>
-          ) : null}
-        </p>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />
-          Sort
-          {openSortModal ? (
-            <div className={`${classes.dropdownList} filterDropdown`}>
-              <div className="sort-row grid">
-                <div className="select-field">
-                  <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
-                    {columns?.map((ele: any) => (
-                      <option value={ele?.fieldName}>{ele?.fieldName}</option>
-                    ))}
-                  </select>
-                  <MdExpandMore />
-                </div>
-                <div className="icon-button">
-                  <button onClick={() => handleOrderChange('asc')}>
-                    <TbSortAscending />
-                  </button>
-                </div>
-                <div className="icon-button">
-                  <button onClick={() => handleOrderChange('desc')}>
-                    <TbSortDescending />
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          ) : null}
-        </p>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`} onClick={() => { setOpenRowModal(!openRowModal); }} aria-hidden="true">
-          <MdCalendarViewMonth />
-          Row Height
-          {openRowModal ? (
-            <div className={`${classes.dropdownList} fieldDropdown`}>
-              <div className="select-field">
-                <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
-                  {rowHeightOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                      pixels
-                    </option>
-                  ))}
-                </select>
-                <MdExpandMore />
-              </div>
-            </div>
-          ) : null}
-        </p>
-        {/* <p className="toolbar-item">
-          <MdSearch />
-          <input type="text" onChange={(e) => handleSearch(e.target.value)} />
-          Search
-        </p> */}
-        <div className="search-box">
-          <input
-            placeholder="Search..."
-            type="text"
-            className="search-field"
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-          <button type="submit" className="search-icon">
-            <MdSearch />
-          </button>
-        </div>
+            ) : null}
+          </p>
+        </Tooltip>
+        <Tooltip key="search" content="This is search filter menu you can search any things in table">
+          <div className="search-box">
+            <input
+              placeholder="Search..."
+              type="text"
+              className="search-field"
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+            <button type="submit" className="search-icon">
+              <MdSearch />
+            </button>
+          </div>
+        </Tooltip>
+        <div onClick={handleDownloadData}>CSV</div>
       </div>
     </div>
   );

@@ -101,3 +101,70 @@ export function groupByColumnName(data: Data1[], columnName: string): any[] {
 
   return result;
 }
+type ObjectUnion = {
+  [key: string]: any;
+};
+
+declare global {
+  interface Navigator {
+    msSaveBlob: (blob: Blob, fileName: string) => boolean
+  }
+}
+
+function flattenObject(obj: ObjectUnion, prefix = ''): ObjectUnion {
+  return Object.keys(obj).reduce((acc, key) => {
+    // eslint-disable-next-line prefer-template
+    const pre = prefix.length ? prefix + '.' : '';
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      Object.assign(acc, flattenObject(obj[key], pre + key));
+    } else {
+      acc[pre + key] = obj[key];
+    }
+    return acc;
+  }, {} as ObjectUnion);
+}
+
+export function downloadCSV(data: Array<ObjectUnion>, filename: string) {
+  const flatData = data.map((item) => flattenObject(item));
+
+  const allKeys = flatData.reduce((keys, obj) => {
+    Object.keys(obj).forEach((key) => {
+      if (!keys.includes(key)) {
+        keys.push(key);
+      }
+    });
+    return keys;
+  }, [] as string[]);
+
+  const csvData = [
+    allKeys.join(','),
+    ...flatData.map((item) =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      allKeys
+        .map((key: string | number) => {
+          const val = item[key];
+          if (typeof val === 'string') {
+            return `"${val.replace(/"/g, '""')}"`;
+          }
+          return val;
+        })
+        .join(',')),
+  ].join('\n');
+
+  const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+
+  if (navigator.msSaveBlob) {
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+}

@@ -17,7 +17,12 @@ import TableRow from './TableRow';
 import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
-import { filterData, groupByColumnName, sortFunc } from './utils';
+import {
+  downloadCSV,
+  filterData,
+  groupByColumnName,
+  sortFunc
+} from './utils';
 
 interface Props {
   showPageHeader: boolean;
@@ -107,6 +112,9 @@ function DataSheet({
   function groupByField(fieldName: string): void {
     const newGroupData = groupByColumnName(data, fieldName);
     setGroupData(newGroupData);
+  }
+  function downloadeData(): void {
+    downloadCSV(data, 'test1.csv');
   }
   const handleCellChange = (
     rowIndex: number,
@@ -199,6 +207,7 @@ function DataSheet({
               handleFilter={filter}
               handleHideColumns={updateVisibility}
               handleGrouping={groupByField}
+              handleDownloadData={downloadeData}
             />
           )}
         </div>

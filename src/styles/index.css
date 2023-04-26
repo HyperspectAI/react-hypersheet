@@ -5,7 +5,7 @@ body {
     font-family: 'Montserrat', sans-serif !important;
 }
 
-*{
+* {
     box-sizing: border-box;
 }
 
@@ -14,7 +14,8 @@ body {
     cursor: pointer;
 }
 
-.select-field select, .field-input{
+.select-field select,
+.field-input {
     -webkit-appearance: none;
     padding: 7px 40px 7px 12px;
     width: 100%;
@@ -27,28 +28,30 @@ body {
     transition: all 150ms ease;
 
 }
-.select-field svg{
+
+.select-field svg {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 5px;
 }
-.select-field select:focus{
+
+.select-field select:focus {
     outline: none;
     border-color: #0077FF;
 }
 
-.grid{
+.grid {
     display: grid;
     width: 100%;
     grid-gap: 10px;
 }
 
-.filter-row{
+.filter-row {
     grid-template-columns: 150px 150px 150px auto;
 }
 
-.sort-row{
+.sort-row {
     grid-template-columns: 150px auto auto;
 }
 
@@ -114,7 +117,7 @@ body {
     width: 100%;
 }
 
-.table-group-row{
+.table-group-row {
     display: table-row;
     border: solid 1px #e1e1e1;
     padding: 6px;
@@ -123,7 +126,7 @@ body {
     border-left: none;
 }
 
-.table-group-cell{
+.table-group-cell {
     border: solid 1px #e1e1e1;
     display: table-cell;
     padding: 6px;
@@ -139,4 +142,27 @@ body {
 
 .group-selected-header {
     font-size: 16px;
+}
+
+.tooltipWrapper {
+    position: relative;
+    display: inline - block;
+}
+
+.tooltipTrigger {
+    display: inline - block;
+    cursor: pointer;
+}
+
+.tooltip {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1;
 }
