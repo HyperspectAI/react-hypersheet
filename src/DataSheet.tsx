@@ -175,7 +175,7 @@ function DataSheet({
     const uniqueKeys = new Set<string>();
     return group?.items?.length
       ? group.items.map((item: any) =>
-      // eslint-disable-next-line implicit-arrow-linebreak
+        // eslint-disable-next-line implicit-arrow-linebreak
         Object.keys(item).map((key) => {
           if (!uniqueKeys.has(key)) {
             uniqueKeys.add(key);
@@ -192,6 +192,13 @@ function DataSheet({
       : [];
   }
 
+  function printPageByClass(className: string) {
+    const printContent = document?.getElementsByClassName(className)[0]?.innerHTML;
+    const originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+  }
   return (
     <GlobalStateProvider>
       <>
@@ -208,6 +215,7 @@ function DataSheet({
               handleHideColumns={updateVisibility}
               handleGrouping={groupByField}
               handleDownloadData={downloadeData}
+              handlePrint={printPageByClass}
             />
           )}
         </div>
@@ -215,7 +223,7 @@ function DataSheet({
           paddingTop: calculateTableBodyPaddingSpace(showPageHeader, showToolbar),
         }}
         />
-        <div className={classes.dataSheetBase}>
+        <div className={`${classes.dataSheetBase} printClass`}>
           <div className={classes.dataSheetBody}>
             {groupData.length
               ? (
