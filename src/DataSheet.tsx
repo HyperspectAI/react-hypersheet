@@ -75,7 +75,7 @@ function DataSheet({
   docTitle,
 }: Props) {
   const [data, setData] = useState<any>(rows);
-  const [groupData, setGroupData] = useState<any>();
+  const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
   const [columns, setColumns] = useState(headers);
@@ -165,14 +165,12 @@ function DataSheet({
 
   function renderUniqueKeys(group: any): JSX.Element[] {
     const uniqueKeys = new Set<string>();
-
     return group?.items?.length
       ? group.items.map((item: any) =>
-        // eslint-disable-next-line implicit-arrow-linebreak
+      // eslint-disable-next-line implicit-arrow-linebreak
         Object.keys(item).map((key) => {
           if (!uniqueKeys.has(key)) {
             uniqueKeys.add(key);
-            console.log('uniqueKeys', uniqueKeys);
             return (
               <div className="table-group-cell" key={key}>
                 <div className="table-group-header">{`${key}`}</div>
