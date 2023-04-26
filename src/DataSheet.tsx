@@ -1,11 +1,4 @@
-/* eslint-disable no-else-return */
-/* eslint-disable @typescript-eslint/comma-dangle */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
@@ -21,7 +14,7 @@ import {
   downloadCSV,
   filterData,
   groupByColumnName,
-  sortFunc
+  sortFunc,
 } from './utils';
 
 interface Props {
@@ -141,12 +134,13 @@ function DataSheet({
             .map((value) => traverseObject(value))
             .filter((value) => value !== '');
           return values.join(', ');
+        // eslint-disable-next-line no-else-return
         } else {
           return `${obj}`;
         }
       };
 
-      return group.items.map((item: Item, index: number) => (
+      return group.items.map((item: Item) => (
         <div className="table-group-row">
           {Object.keys(item).map((key) => {
             const value = item[key];
@@ -166,6 +160,7 @@ function DataSheet({
           })}
         </div>
       ));
+    // eslint-disable-next-line no-else-return
     } else {
       return null;
     }
@@ -186,7 +181,7 @@ function DataSheet({
             );
           }
           return null;
-        })
+        }),
         // eslint-disable-next-line function-paren-newline
       )
       : [];
@@ -250,7 +245,14 @@ function DataSheet({
                         <TableRow key={i1 as any}>
                           <TableData>
                             {
-                              renderRow(rowObj, searchTerm, rowHeight, columns, handleCellChange, i1)
+                              renderRow(
+                                rowObj,
+                                searchTerm,
+                                rowHeight,
+                                columns,
+                                handleCellChange,
+                                i1,
+                              )
                             }
                           </TableData>
                         </TableRow>
