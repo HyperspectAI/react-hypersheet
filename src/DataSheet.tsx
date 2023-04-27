@@ -238,7 +238,6 @@ function DataSheet({
                   <TableRow>
                     <TableHeader headers={headers} />
                   </TableRow>
-                  {/* {Object.keys(groupData).length !== 0 ? renderGroupRow(groupData) : null} */}
                   {
                     data?.length ? (
                       data.map((rowObj: any, i1: any) => (
