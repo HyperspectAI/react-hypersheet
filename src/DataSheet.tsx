@@ -57,7 +57,6 @@ const renderRow = (
     }
   </>
 );
-
 const calculateTableBodyPaddingSpace = (isPageHeader: boolean, isPageToolbar: boolean): string => {
   let val = 0;
   if (isPageHeader && isPageToolbar) return '135px';
@@ -108,7 +107,7 @@ function DataSheet({
     setGroupData(newGroupData);
   }
   function downloadData(): void {
-    downloadCSV(data, 'test1.csv');
+    downloadCSV(data, 'sample.csv');
   }
   const handleCellChange = (
     rowIndex: number,
