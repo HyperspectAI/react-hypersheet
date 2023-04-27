@@ -13,6 +13,7 @@ import Cell from './Cell';
 import {
   downloadCSV,
   filterData,
+  getObjectValue,
   groupByColumnName,
   sortFunc,
 } from './utils';
@@ -36,11 +37,11 @@ const renderRow = (
   <>
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
-        if (typeof rowObj[k] === 'string') {
+        if (['number', 'string', 'object'].includes(typeof rowObj[k])) {
           return (
             columns[index]?.isVisible && (
               <Cell
-                value={rowObj[k]}
+                value={getObjectValue(rowObj, k).toString()}
                 searchTerms={searchTerm}
                 key={rowObj[k]}
                 rowHeights={rowHeight}
@@ -106,7 +107,7 @@ function DataSheet({
     const newGroupData = groupByColumnName(data, fieldName);
     setGroupData(newGroupData);
   }
-  function downloadeData(): void {
+  function downloadData(): void {
     downloadCSV(data, 'test1.csv');
   }
   const handleCellChange = (
@@ -134,7 +135,7 @@ function DataSheet({
             .map((value) => traverseObject(value))
             .filter((value) => value !== '');
           return values.join(', ');
-        // eslint-disable-next-line no-else-return
+          // eslint-disable-next-line no-else-return
         } else {
           return `${obj}`;
         }
@@ -160,7 +161,7 @@ function DataSheet({
           })}
         </div>
       ));
-    // eslint-disable-next-line no-else-return
+      // eslint-disable-next-line no-else-return
     } else {
       return null;
     }
@@ -209,7 +210,7 @@ function DataSheet({
               handleFilter={filter}
               handleHideColumns={updateVisibility}
               handleGrouping={groupByField}
-              handleDownloadData={downloadeData}
+              handleDownloadData={downloadData}
               handlePrint={printPageByClass}
             />
           )}

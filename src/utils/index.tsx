@@ -1,3 +1,6 @@
+/* eslint-disable no-confusing-arrow */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable @typescript-eslint/comma-dangle */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 /* eslint-disable no-else-return */
@@ -166,5 +169,31 @@ export function downloadCSV(data: Array<ObjectUnion>, filename: string) {
       link.click();
       document.body.removeChild(link);
     }
+  }
+}
+interface NestedObject {
+  [key: string]: any;
+}
+export function getObjectValue(obj: NestedObject, key: string): any {
+  if (key in obj) {
+    const value = obj[key];
+    if (typeof value === 'object' && value !== null) {
+      // If the value is a nested object, recursively call this function on it
+      // and join the values with commas
+      return Object.values(value)
+        .map((nestedValue) =>
+          typeof nestedValue === 'object' && nestedValue !== null
+            ? getObjectValue(nestedValue, Object.keys(nestedValue)[0])
+            : nestedValue
+        // eslint-disable-next-line @typescript-eslint/indent, function-paren-newline
+         )
+        .join(',');
+    } else {
+      // Otherwise, return the value itself
+      return value;
+    }
+  } else {
+    // If the key doesn't exist in the object, return undefined
+    return undefined;
   }
 }

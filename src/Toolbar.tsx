@@ -80,7 +80,7 @@ function Toolbar({
   return (
     <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
       <div className={`${classes.dataSheetToolbar} toolbarList`}>
-        <Tooltip key="hideFields" content="This is hidden field menu you can hide unhide columns vise fiels">
+        <Tooltip key="hideFields" content="This is hidden field menu you can hide unhide columns vise fields">
           <p className={`${classes.dataSheetToolbar} toolbarItem`}>
             <MdRemoveRedEye onClick={() => { setOpenHideField(!openHideFields); }} aria-hidden="true" />
             Hide fields
@@ -96,7 +96,7 @@ function Toolbar({
             ) : null}
           </p>
         </Tooltip>
-        <Tooltip key="Filter" content="This is hidden filter menu you can filter data columns vise fiels">
+        <Tooltip key="Filter" content="This is hidden filter menu you can filter data columns vise fields">
           <p className={`${classes.dataSheetToolbar} toolbarItem`}>
             <MdFilterList onClick={() => { setOpenFilterModal(!openFilterModal); }} aria-hidden="true" />
             Filter
@@ -133,7 +133,7 @@ function Toolbar({
             ) : null}
           </p>
         </Tooltip>
-        <Tooltip key="Group" content="This is group filter menu you can group data columns vise fiels">
+        <Tooltip key="Group" content="This is group filter menu you can group data columns vise fields">
           <p className={`${classes.dataSheetToolbar} toolbarItem`}>
             <MdCalendarViewMonth onClick={() => { setOpenGroupModal(!openGroupModal); }} aria-hidden="true" />
             Group
@@ -151,7 +151,7 @@ function Toolbar({
             ) : null}
           </p>
         </Tooltip>
-        <Tooltip key="Sort" content="This is Sort filter menu you can Sort data columns vise fiels">
+        <Tooltip key="Sort" content="This is Sort filter menu you can Sort data columns vise fields">
           <p className={`${classes.dataSheetToolbar} toolbarItem`}>
             <MdOutlineSort onClick={() => { setOpenSortModal(!openSortModal); }} aria-hidden="true" />
             Sort
@@ -182,7 +182,7 @@ function Toolbar({
             ) : null}
           </p>
         </Tooltip>
-        <Tooltip key="RowHeight" content="This is row height filter menu you can row height columns vise fiels">
+        <Tooltip key="RowHeight" content="This is row height filter menu you can row height columns vise fields">
           <p className={`${classes.dataSheetToolbar} toolbarItem`} onClick={() => { setOpenRowModal(!openRowModal); }} aria-hidden="true">
             <MdCalendarViewMonth />
             Row Height
