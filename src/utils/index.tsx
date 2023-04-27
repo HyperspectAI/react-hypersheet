@@ -1,11 +1,4 @@
-/* eslint-disable no-confusing-arrow */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable @typescript-eslint/comma-dangle */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable max-len */
 /* eslint-disable no-else-return */
-/* eslint-disable arrow-body-style */
-/* eslint-disable import/prefer-default-export */
 interface Data {
   [key: string]: number | string | boolean | null;
 }
@@ -38,7 +31,12 @@ export const renderHighlightedText = (text: string, searchTerm: string) => {
   return highlighted;
 };
 
-export function filterData(data: Data[], fieldName: string, operator: Operator, value: any): Data[] {
+export function filterData(
+  data: Data[],
+  fieldName: string,
+  operator: Operator,
+  value: any,
+): Data[] {
   return data.filter((item) => {
     const fieldValue = item[fieldName];
     switch (operator) {
@@ -89,8 +87,8 @@ export function groupByColumnName(data: Data1[], columnName: string): any[] {
     groups[groupValue].push(item);
   });
 
-  // Convert the grouped data into an array of objects
   const result: any[] = [];
+  // eslint-disable-next-line no-restricted-syntax
   for (const groupName in groups) {
     // eslint-disable-next-line no-prototype-builtins
     if (groups.hasOwnProperty(groupName)) {
@@ -178,22 +176,20 @@ export function getObjectValue(obj: NestedObject, key: string): any {
   if (key in obj) {
     const value = obj[key];
     if (typeof value === 'object' && value !== null) {
-      // If the value is a nested object, recursively call this function on it
-      // and join the values with commas
       return Object.values(value)
+        // eslint-disable-next-line no-confusing-arrow
         .map((nestedValue) =>
+          // eslint-disable-next-line implicit-arrow-linebreak
           typeof nestedValue === 'object' && nestedValue !== null
             ? getObjectValue(nestedValue, Object.keys(nestedValue)[0])
-            : nestedValue
-        // eslint-disable-next-line @typescript-eslint/indent, function-paren-newline
-         )
+            : nestedValue,
+        // eslint-disable-next-line function-paren-newline
+        )
         .join(',');
     } else {
-      // Otherwise, return the value itself
       return value;
     }
   } else {
-    // If the key doesn't exist in the object, return undefined
     return undefined;
   }
 }
