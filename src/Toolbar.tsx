@@ -29,7 +29,8 @@ interface Props {
   handleHideColumns: any,
   handleGrouping: any,
   handleDownloadData: any,
-  handlePrint: any
+  handlePrint: any,
+  handleNewRow: any
 }
 function Toolbar({
   style,
@@ -42,6 +43,7 @@ function Toolbar({
   handleGrouping,
   handleDownloadData,
   handlePrint,
+  handleNewRow,
 }: Props) {
   const classes = useStyles();
   const [openSortModal, setOpenSortModal] = useState(false);
@@ -218,6 +220,7 @@ function Toolbar({
         </Tooltip>
         <div onClick={handleDownloadData}>CSV</div>
         <div onClick={() => handlePrint('printClass')}>Prints</div>
+        <div onClick={handleNewRow}>Add New Row</div>
       </div>
     </div>
   );

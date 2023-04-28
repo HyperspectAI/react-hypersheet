@@ -11,6 +11,7 @@ import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
 import {
+  addNewObjectToArray,
   downloadCSV,
   filterData,
   getObjectValue,
@@ -72,6 +73,7 @@ function DataSheet({
   rows,
   docTitle,
 }: Props) {
+  const classes = useStyles();
   const [data, setData] = useState<any>(rows);
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -114,11 +116,13 @@ function DataSheet({
     columnName: string,
     value: string,
   ) => {
-    const updatedRows = [...rows];
+    const updatedRows = [...data];
     updatedRows[rowIndex][columnName] = value;
     setData(updatedRows);
   };
-  const classes = useStyles();
+  function addTableRow() {
+    setData(addNewObjectToArray(data));
+  }
 
   interface Item {
     [key: string]: any;
@@ -194,6 +198,7 @@ function DataSheet({
     window.print();
     document.body.innerHTML = originalContent;
   }
+
   return (
     <GlobalStateProvider>
       <>
@@ -211,6 +216,7 @@ function DataSheet({
               handleGrouping={groupByField}
               handleDownloadData={downloadData}
               handlePrint={printPageByClass}
+              handleNewRow={addTableRow}
             />
           )}
         </div>
@@ -236,7 +242,7 @@ function DataSheet({
               ) : (
                 <>
                   <TableRow>
-                    <TableHeader headers={headers} />
+                    <TableHeader headers={columns} />
                   </TableRow>
                   {
                     data?.length ? (

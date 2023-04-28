@@ -193,3 +193,20 @@ export function getObjectValue(obj: NestedObject, key: string): any {
     return undefined;
   }
 }
+export function addNewObjectToArray(arr: any) {
+  // Find the maximum ID value in the array
+  const maxId = arr.reduce((max: any, obj: any) => Math.max(max, obj.id || 0), 0);
+
+  const newObjWithId: any = { id: maxId + 1 };
+  Object.keys(arr[0]).forEach((key: any) => {
+    if (key !== 'id') {
+      newObjWithId[key] = key;
+    }
+  });
+
+  // Add the new object to the array
+  arr.push(newObjWithId);
+
+  // Return the updated array
+  return arr;
+}
