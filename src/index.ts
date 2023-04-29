@@ -1,3 +1,5 @@
+import { jss } from 'react-jss';
+import jssPluginNested from 'jss-plugin-nested';
 import DataSheet from './DataSheet';
 import PageHeader from './PageHeader';
 import Toolbar from './Toolbar';
@@ -7,6 +9,8 @@ import TableData from './TableData';
 import Cell from './Cell';
 
 import './styles/index.css';
+
+jss.use(jssPluginNested());
 
 export default DataSheet;
 

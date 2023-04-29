@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import useStyles from './styles';
 
 interface Props {
   value: string;
@@ -7,12 +8,14 @@ interface Props {
 
 function Cell({
   value,
-}:Props) {
+}: Props) {
+  const classes = useStyles();
+
   const [isSelected, setIsSelected] = React.useState(false);
 
   return (
     <div
-      className={clsx('table-cell', isSelected && 'selected-table-cell')}
+      className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
       onClick={() => setIsSelected(true)}
       role="none"
     >

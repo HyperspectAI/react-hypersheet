@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Cell from './Cell';
 import { HeaderKey } from './types';
+import useStyles from './styles';
 
 interface Props {
   headers: HeaderKey[]
@@ -10,8 +11,9 @@ interface Props {
 function TableHeader({
   headers,
 }: Props) {
+  const classes = useStyles();
   return (
-    <div className="table-header">
+    <div className={classes.tableHeader}>
       {
         headers.map((header) => (
           <Cell value={header.headerName} />
