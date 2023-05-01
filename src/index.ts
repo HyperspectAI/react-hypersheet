@@ -1,3 +1,4 @@
+import '../wdyr';
 import { jss } from 'react-jss';
 import jssPluginNested from 'jss-plugin-nested';
 import DataSheet from './DataSheet';
