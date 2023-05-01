@@ -21,7 +21,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "prepare": "husky install",
-    "prebuild": "rimraf dist"
+    "prebuild": "rimraf dist",
+    "git:clean": "git branch | grep -v main | xargs git branch -D"
   },
   "repository": {
     "type": "git",
