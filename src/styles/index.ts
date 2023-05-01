@@ -106,7 +106,7 @@ const styles = {
   },
   tableCell: {
     border: 'solid 1px #e1e1e1',
-    minWidth: '200px',
+    width: '200px',
     display: 'table-cell',
     padding: '6px',
     borderLeft: 'none',
