@@ -1,15 +1,11 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/function-component-definition */
+// eslint-disable-next-line react/prop-types
 
 import React, { useState } from 'react';
+import { TooltipProps } from './types';
 
-/* eslint-disable react/function-component-definition */
-interface TooltipProps {
-  content: string;
-  children: React.ReactElement;
-}
-
-// eslint-disable-next-line react/prop-types
 const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const handleMouseEnter = () => setShowTooltip(true);

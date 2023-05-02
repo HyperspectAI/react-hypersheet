@@ -1,9 +1,17 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-else-return */
-interface Data {
-  [key: string]: number | string | boolean | null;
+import {
+  Data,
+  Direction,
+  ObjectUnion,
+  Operator,
+} from '../types';
+
+declare global {
+  interface Navigator {
+    msSaveBlob: (blob: Blob, fileName: string) => boolean
+  }
 }
-type Direction = 'asc' | 'desc';
-type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 
 export function sortFunc(data: Data[], field: string, direction: Direction): Data[] {
   return data.slice().sort((a, b) => {
@@ -71,11 +79,7 @@ export function groupByFunc<T extends Record<string, unknown>>(
   return groups;
 }
 
-interface Data1 {
-  [key: string]: any;
-}
-
-export function groupByColumnName(data: Data1[], columnName: string): any[] {
+export function groupByColumnName(data: ObjectUnion[], columnName: string): any[] {
   const groups: any = {};
 
   // Group the data by the column name
@@ -102,16 +106,6 @@ export function groupByColumnName(data: Data1[], columnName: string): any[] {
 
   return result;
 }
-type ObjectUnion = {
-  [key: string]: any;
-};
-
-declare global {
-  interface Navigator {
-    msSaveBlob: (blob: Blob, fileName: string) => boolean
-  }
-}
-
 function flattenObject(obj: ObjectUnion, prefix = ''): ObjectUnion {
   return Object.keys(obj).reduce((acc, key) => {
     // eslint-disable-next-line prefer-template
@@ -140,7 +134,6 @@ export function downloadCSV(data: Array<ObjectUnion>, filename: string) {
   const csvData = [
     allKeys.join(','),
     ...flatData.map((item) =>
-      // eslint-disable-next-line implicit-arrow-linebreak
       allKeys
         .map((key: string | number) => {
           const val = item[key];
@@ -169,17 +162,14 @@ export function downloadCSV(data: Array<ObjectUnion>, filename: string) {
     }
   }
 }
-interface NestedObject {
-  [key: string]: any;
-}
-export function getObjectValue(obj: NestedObject, key: string): any {
+
+export function getObjectValue(obj: ObjectUnion, key: string): any {
   if (key in obj) {
     const value = obj[key];
     if (typeof value === 'object' && value !== null) {
       return Object.values(value)
         // eslint-disable-next-line no-confusing-arrow
         .map((nestedValue) =>
-          // eslint-disable-next-line implicit-arrow-linebreak
           typeof nestedValue === 'object' && nestedValue !== null
             ? getObjectValue(nestedValue, Object.keys(nestedValue)[0])
             : nestedValue,
@@ -203,10 +193,8 @@ export function addNewObjectToArray(arr: any) {
       newObjWithId[key] = key;
     }
   });
-
   // Add the new object to the array
   arr.push(newObjWithId);
-
   // Return the updated array
   return arr;
 }
