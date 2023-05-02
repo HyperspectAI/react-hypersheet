@@ -274,6 +274,8 @@ function DataSheet({
   );
 }
 
+DataSheet.whyDidYouRender = true;
+
 DataSheet.propTypes = {
   showPageHeader: PropTypes.bool,
   showToolbar: PropTypes.bool,
