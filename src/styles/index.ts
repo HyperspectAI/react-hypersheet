@@ -92,9 +92,10 @@ const styles = {
   tableHeader: {
     background: '#f2f2f2',
     color: 'black',
+    display: 'table-row',
   },
   tableRow: {
-    display: 'table-row',
+    display: 'table-row-group',
     '&:hover': {
       tableData: {
         background: '#f2f2f2',
@@ -103,15 +104,19 @@ const styles = {
   },
   tableData: {
     background: 'white',
+    display: 'table-row',
   },
   tableCell: {
     border: 'solid 1px #e1e1e1',
-    width: '200px',
+    maxWidth: '200px',
     display: 'table-cell',
     padding: '6px',
     borderLeft: 'none',
     borderTop: 'none',
     fontSize: '13px',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
   selectedTableCell: {
     outline: 'solid 1px black',

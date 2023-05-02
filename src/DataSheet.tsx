@@ -14,7 +14,6 @@ import {
   addNewObjectToArray,
   downloadCSV,
   filterData,
-  getObjectValue,
   groupByColumnName,
   sortFunc,
 } from './utils';
@@ -38,11 +37,11 @@ const renderRow = (
   <>
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
-        if (['number', 'string', 'object'].includes(typeof rowObj[k])) {
+        if (['string'].includes(typeof rowObj[k])) {
           return (
-            columns[index]?.isVisible && (
+            columns[index]?.isVisible && rowObj[k] && (
               <Cell
-                value={getObjectValue(rowObj, k).toString()}
+                value={rowObj[k]}
                 searchTerms={searchTerm}
                 key={rowObj[k]}
                 rowHeights={rowHeight}
@@ -83,15 +82,13 @@ function DataSheet({
     // eslint-disable-next-line @typescript-eslint/comma-spacing
     const sortData = sortFunc(data, filterOption, option);
     setData(sortData);
-    setGroupData({});
   }
+
   function onSearch(searchValue: string): void {
     setSearchTerm(searchValue);
-    setGroupData({});
   }
   function RowHeight(height: number): void {
     setRowHeight(height);
-    setGroupData({});
   }
   function filter(fieldName: string, operator: any, value: any): void {
     const newFilterData = filterData(data, fieldName, operator, value);
@@ -242,7 +239,7 @@ function DataSheet({
               ) : (
                 <>
                   <TableRow>
-                    <TableHeader headers={columns} />
+                    <TableHeader headers={headers} />
                   </TableRow>
                   {
                     data?.length ? (
