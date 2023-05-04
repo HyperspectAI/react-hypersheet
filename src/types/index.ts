@@ -2,7 +2,7 @@ interface GlobalStateContextVals {
   headers: HeaderKey[],
   rows: any[],
   setHeaders: React.Dispatch<React.SetStateAction<never[]>>,
-  setRows: React.Dispatch<React.SetStateAction<never[]>>
+  setRows: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 interface HeaderKey {

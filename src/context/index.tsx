@@ -13,12 +13,19 @@ export function GlobalStateProvider({
 }: ProviderProps) {
   const [headers, setHeaders] = useState([]);
   const [rows, setRows] = useState([]);
+  const [commonState, setCommonState] = useState({
+    showPageHeader: false,
+    showToolbar: false,
+    docTitle: '',
+  });
   return (
     <GlobalStateContext.Provider value={{
       headers,
       rows,
+      commonState,
       setHeaders,
       setRows,
+      setCommonState,
     }}
     >
       {children}

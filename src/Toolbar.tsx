@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -150,8 +151,7 @@ function Toolbar({
             </div>
           ) : null}
         </p>
-
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+        {/* <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdCalendarViewMonth onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true" />
           Group
           {openModal?.grouping ? (
@@ -166,7 +166,7 @@ function Toolbar({
               ))}
             </div>
           ) : null}
-        </p>
+        </p> */}
 
         <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdOutlineSort onClick={() => { handleModalToggle('sort'); }} aria-hidden="true" />

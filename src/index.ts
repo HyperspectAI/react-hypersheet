@@ -1,6 +1,7 @@
 import '../wdyr';
 import { jss } from 'react-jss';
 import jssPluginNested from 'jss-plugin-nested';
+import Table from './Table';
 import DataSheet from './DataSheet';
 import PageHeader from './PageHeader';
 import Toolbar from './Toolbar';
@@ -13,7 +14,7 @@ import './styles/index.css';
 
 jss.use(jssPluginNested());
 
-export default DataSheet;
+export default Table;
 
 export {
   PageHeader,
@@ -22,4 +23,5 @@ export {
   TableHeader,
   TableData,
   Cell,
+  DataSheet,
 };

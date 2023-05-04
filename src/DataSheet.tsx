@@ -1,9 +1,8 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import useStyles from './styles';
-import { HeaderKey } from './types';
-import { GlobalStateProvider } from './context';
+import { GlobalStateContext } from './context';
 import PageHeader from './PageHeader';
 import Toolbar from './Toolbar';
 import TableRow from './TableRow';
@@ -18,14 +17,6 @@ import {
   sortFunc,
 } from './utils';
 
-interface Props {
-  showPageHeader: boolean;
-  showToolbar: boolean;
-  headers: HeaderKey[];
-  rows: any[];
-  docTitle: string;
-}
-
 const renderRow = (
   rowObj: any,
   searchTerm: string,
@@ -38,12 +29,15 @@ const renderRow = (
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
         if (['string'].includes(typeof rowObj[k])) {
+          rowObj.id = '';
+          rowObj.address = '';
+          rowObj.company = '';
           return (
-            columns[index]?.isVisible && rowObj[k] && (
+            columns[index]?.isVisible && (
               <Cell
                 value={rowObj[k]}
                 searchTerms={searchTerm}
-                key={rowObj[k]}
+                key={index as any}
                 rowHeights={rowHeight}
                 handleCellChange={handleCellChange}
                 columnName={k}
@@ -65,25 +59,23 @@ const calculateTableBodyPaddingSpace = (isPageHeader: boolean, isPageToolbar: bo
   return val.toString().concat('px');
 };
 
-function DataSheet({
-  showPageHeader,
-  showToolbar,
-  headers,
-  rows,
-  docTitle,
-}: Props) {
+function DataSheet() {
   const classes = useStyles();
-  const [data, setData] = useState<any>(rows);
+  const {
+    headers,
+    rows,
+    commonState,
+    setHeaders,
+    setRows,
+  } : any = React.useContext(GlobalStateContext);
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
-  const [columns, setColumns] = useState(headers);
-  function onSort(filterOption: string, option: any): void {
-    // eslint-disable-next-line @typescript-eslint/comma-spacing
-    const sortData = sortFunc(data, filterOption, option);
-    setData(sortData);
-  }
 
+  function onSort(filterOption: string, option: any): void {
+    const sortData = sortFunc(rows, filterOption, option);
+    setRows(sortData);
+  }
   function onSearch(searchValue: string): void {
     setSearchTerm(searchValue);
   }
@@ -91,34 +83,33 @@ function DataSheet({
     setRowHeight(height);
   }
   function filter(fieldName: string, operator: any, value: any): void {
-    const newFilterData = filterData(data, fieldName, operator, value);
-    setData(newFilterData);
-    setGroupData({});
+    const Data = filterData(rows, fieldName, operator, value);
+    setRows(Data);
   }
   function updateVisibility(columnName: string, value: boolean): void {
-    const index = columns.findIndex((column) => column.fieldName === columnName);
-    const newColumns = [...columns];
+    const index = headers.findIndex((column: any) => column.fieldName === columnName);
+    const newColumns = [...headers];
     newColumns[index].isVisible = value;
-    setColumns(newColumns);
+    setHeaders(newColumns);
   }
   function groupByField(fieldName: string): void {
-    const newGroupData = groupByColumnName(data, fieldName);
+    const newGroupData = groupByColumnName(rows, fieldName);
     setGroupData(newGroupData);
   }
   function downloadData(): void {
-    downloadCSV(data, 'sample.csv');
+    downloadCSV(rows, 'sample.csv');
   }
   const handleCellChange = (
     rowIndex: number,
     columnName: string,
     value: string,
   ) => {
-    const updatedRows = [...data];
+    const updatedRows = [...rows];
     updatedRows[rowIndex][columnName] = value;
-    setData(updatedRows);
+    setRows(updatedRows);
   };
   function addTableRow() {
-    setData(addNewObjectToArray(data));
+    setRows(addNewObjectToArray(rows));
   }
 
   interface Item {
@@ -197,96 +188,81 @@ function DataSheet({
   }
 
   return (
-    <GlobalStateProvider>
-      <>
-        <div className={classes.fixedTop}>
-          {showPageHeader && <PageHeader docTitle={docTitle} />}
-          {showToolbar && (
-            <Toolbar
-              style={{ 'datasheet-toolbar': showPageHeader ? { top: '-10px' } : { top: 0 } }}
-              handleSort={onSort}
-              handleSearch={onSearch}
-              columns={columns}
-              handleRowHeightChange={RowHeight}
-              handleFilter={filter}
-              handleHideColumns={updateVisibility}
-              handleGrouping={groupByField}
-              handleDownloadData={downloadData}
-              handlePrint={printPageByClass}
-              handleNewRow={addTableRow}
-            />
-          )}
-        </div>
-        <div style={{
-          paddingTop: calculateTableBodyPaddingSpace(showPageHeader, showToolbar),
-        }}
-        />
-        <div className={`${classes.dataSheetBase} printClass`}>
-          <div className={classes.dataSheetBody}>
-            {groupData.length
-              ? (
-                groupData?.map((group: any) => (
-                  <div key={group.groupName} className={classes.tableRow}>
-                    <h2 className="group-selected-header">{group.groupName}</h2>
-                    <div className="table-row-group">
-                      <div className="table-group-row">
-                        {renderUniqueKeys(group)}
-                      </div>
-                      {renderItems(group)}
+    <>
+      <div className={classes.fixedTop}>
+        {commonState.showPageHeader && <PageHeader docTitle={commonState.docTitle} />}
+        {commonState.showToolbar && (
+          <Toolbar
+            style={{ 'datasheet-toolbar': commonState.showPageHeader ? { top: '-10px' } : { top: 0 } }}
+            handleSort={onSort}
+            handleSearch={onSearch}
+            columns={headers}
+            handleRowHeightChange={RowHeight}
+            handleFilter={filter}
+            handleHideColumns={updateVisibility}
+            handleGrouping={groupByField}
+            handleDownloadData={downloadData}
+            handlePrint={printPageByClass}
+            handleNewRow={addTableRow}
+          />
+        )}
+      </div>
+      <div style={{
+        paddingTop: calculateTableBodyPaddingSpace(
+          commonState.showPageHeader,
+          commonState.showToolbar,
+        ),
+      }}
+      />
+      <div className={`${classes.dataSheetBase} printClass`}>
+        <div className={classes.dataSheetBody}>
+          {groupData.length
+            ? (
+              groupData?.map((group: any) => (
+                <div key={group.groupName} className={classes.tableRow}>
+                  <h2 className="group-selected-header">{group.groupName}</h2>
+                  <div className="table-row-group">
+                    <div className="table-group-row">
+                      {renderUniqueKeys(group)}
                     </div>
+                    {renderItems(group)}
                   </div>
-                ))
-              ) : (
-                <>
-                  <TableRow>
-                    <TableHeader headers={headers} />
-                  </TableRow>
-                  {
-                    data?.length ? (
-                      data.map((rowObj: any, i1: any) => (
-                        <TableRow key={i1 as any}>
-                          <TableData>
-                            {
-                              renderRow(
-                                rowObj,
-                                searchTerm,
-                                rowHeight,
-                                columns,
-                                handleCellChange,
-                                i1,
-                              )
-                            }
-                          </TableData>
-                        </TableRow>
-                      ))
-                    ) : <span>Data Not Found</span>
-                  }
-                </>
-              )}
+                </div>
+              ))
+            ) : (
+              <>
+                <TableRow>
+                  <TableHeader headers={headers} />
+                </TableRow>
+                {
+                  rows?.length ? (
+                    rows.map((rowObj: any, i1: any) => (
+                      <TableRow key={i1 as any}>
+                        <TableData>
+                          {
+                            renderRow(
+                              rowObj,
+                              searchTerm,
+                              rowHeight,
+                              headers,
+                              handleCellChange,
+                              i1,
+                            )
+                          }
+                        </TableData>
+                      </TableRow>
+                    ))
+                  ) : <span>Data Not Found</span>
+                }
+              </>
+            )}
 
-          </div>
         </div>
-      </>
-    </GlobalStateProvider>
+      </div>
+    </>
   );
 }
 
 DataSheet.whyDidYouRender = true;
-
-DataSheet.propTypes = {
-  showPageHeader: PropTypes.bool,
-  showToolbar: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  headers: PropTypes.array.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  rows: PropTypes.array.isRequired,
-  docTitle: PropTypes.string,
-};
-
-DataSheet.defaultProps = {
-  showPageHeader: true,
-  showToolbar: true,
-  docTitle: 'Document',
-};
 
 export default DataSheet;
