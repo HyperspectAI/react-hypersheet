@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
@@ -28,10 +29,12 @@ const renderRow = (
   <>
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
+        if (['object', 'array', 'number'].includes(typeof rowObj[k])) {
+          rowObj[k] = '';
+        } else if (['boolean'].includes(typeof rowObj[k])) {
+          return rowObj[k] = rowObj[k].toString();
+        }
         if (['string'].includes(typeof rowObj[k])) {
-          rowObj.id = '';
-          rowObj.address = '';
-          rowObj.company = '';
           return (
             columns[index]?.isVisible && (
               <Cell
@@ -67,7 +70,7 @@ function DataSheet() {
     commonState,
     setHeaders,
     setRows,
-  } : any = React.useContext(GlobalStateContext);
+  }: any = React.useContext(GlobalStateContext);
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);

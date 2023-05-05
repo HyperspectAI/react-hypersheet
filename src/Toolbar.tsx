@@ -151,7 +151,7 @@ function Toolbar({
             </div>
           ) : null}
         </p>
-        {/* <p className={`${classes.dataSheetToolbar} toolbarItem`}>
+        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdCalendarViewMonth onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true" />
           Group
           {openModal?.grouping ? (
@@ -166,7 +166,7 @@ function Toolbar({
               ))}
             </div>
           ) : null}
-        </p> */}
+        </p>
 
         <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdOutlineSort onClick={() => { handleModalToggle('sort'); }} aria-hidden="true" />
