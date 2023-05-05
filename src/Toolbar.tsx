@@ -235,7 +235,7 @@ function Toolbar({
             <div className={`${classes.dropdownList} fieldDropdown`}>
               <div className="select-field">
                 <div onClick={handleDownloadData}>CSV</div>
-                <div onClick={() => handlePrint('printClass')}>Prints</div>
+                {/* <div onClick={() => handlePrint('printClass')}>Prints</div> */}
               </div>
             </div>
           ) : null}
