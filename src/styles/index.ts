@@ -155,6 +155,11 @@ const styles = {
   checkboxLabel: {
     marginLeft: '5px',
   },
+  dataSheetText: {
+    margin: '0px',
+    display: 'flex',
+    alignItems: 'center',
+  },
 };
 
 const useStyles = createUseStyles(styles);

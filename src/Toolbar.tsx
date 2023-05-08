@@ -101,9 +101,11 @@ function Toolbar({
     <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
       <div className={`${classes.dataSheetToolbar} toolbarList`}>
 
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdRemoveRedEye onClick={() => { handleModalToggle('hideFields'); }} aria-hidden="true" />
-          Hide fields
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('hideFields'); }} aria-hidden="true">
+            <MdRemoveRedEye />
+            Hide fields
+          </p>
           {openModal?.hideFields ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
               {columns?.map((ele: any) => (
@@ -114,11 +116,12 @@ function Toolbar({
               ))}
             </div>
           ) : null}
-        </p>
-
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdFilterList onClick={() => { handleModalToggle('filter'); }} aria-hidden="true" />
-          Filter
+        </div>
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('filter'); }} aria-hidden="true">
+            <MdFilterList />
+            Filter
+          </p>
           {openModal.filter ? (
             <div className={`${classes.dropdownList} filterDropdown`}>
               <div className="filter-row grid">
@@ -150,7 +153,7 @@ function Toolbar({
               </div>
             </div>
           ) : null}
-        </p>
+        </div>
         {/* <p className={`${classes.dataSheetToolbar} toolbarItem`}>
           <MdCalendarViewMonth onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true" />
           Group
@@ -167,10 +170,11 @@ function Toolbar({
             </div>
           ) : null}
         </p> */}
-
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdOutlineSort onClick={() => { handleModalToggle('sort'); }} aria-hidden="true" />
-          Sort
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('sort'); }} aria-hidden="true">
+            <MdOutlineSort />
+            Sort
+          </p>
           {openModal.sort ? (
             <div className={`${classes.dropdownList} filterDropdown`}>
               <div className="sort-row grid">
@@ -196,11 +200,12 @@ function Toolbar({
               </div>
             </div>
           ) : null}
-        </p>
-
-        <p className={`${classes.dataSheetToolbar} toolbarItem`} onClick={() => { handleModalToggle('rowHeight'); }} aria-hidden="true">
-          <MdCalendarViewMonth />
-          Row Height
+        </div>
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowHeight'); }} aria-hidden="true">
+            <MdCalendarViewMonth />
+            Row Height
+          </p>
           {openModal?.rowHeight ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
               <div className="select-field">
@@ -216,7 +221,7 @@ function Toolbar({
               </div>
             </div>
           ) : null}
-        </p>
+        </div>
 
         <div className="search-box">
           <input
@@ -229,17 +234,19 @@ function Toolbar({
             <MdSearch />
           </button>
         </div>
-        <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdOutlineMenu onClick={() => { handleModalToggle('other'); }} aria-hidden="true" />
-          {openModal?.other ? (
-            <div className={`${classes.dropdownList} fieldDropdown`}>
-              <div className="select-field">
-                <div onClick={handleDownloadData}>CSV</div>
-                {/* <div onClick={() => handlePrint('printClass')}>Prints</div> */}
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('other'); }} aria-hidden="true">
+            <MdOutlineMenu />
+            {openModal?.other ? (
+              <div className={`${classes.dropdownList} fieldDropdown`}>
+                <div className="select-field">
+                  <div onClick={handleDownloadData}>CSV</div>
+                  {/* <div onClick={() => handlePrint('printClass')}>Prints</div> */}
+                </div>
               </div>
-            </div>
-          ) : null}
-        </p>
+            ) : null}
+          </p>
+        </div>
         {/* <div onClick={handleNewRow}>Add New Row</div> */}
       </div>
     </div>
