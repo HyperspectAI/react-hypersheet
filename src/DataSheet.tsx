@@ -29,9 +29,9 @@ const renderRow = (
   <>
     {
       Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
-        if (['object', 'array', 'number'].includes(typeof rowObj[k])) {
+        if (['object', 'array'].includes(typeof rowObj[k])) {
           rowObj[k] = '';
-        } else if (['boolean'].includes(typeof rowObj[k])) {
+        } else if (['boolean', 'number'].includes(typeof rowObj[k])) {
           return rowObj[k] = rowObj[k].toString();
         }
         if (['string'].includes(typeof rowObj[k])) {
