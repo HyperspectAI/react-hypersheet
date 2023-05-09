@@ -13,7 +13,15 @@ declare global {
   }
 }
 
-export function sortFunc(data: Data[], field: string, direction: Direction): Data[] {
+/**
+ *
+ * @deprecated This function will be removed in next build, Please use sort function from utils
+ */
+export function sortFunc(
+  data: Data[],
+  field: string,
+  direction: Direction,
+): Data[] {
   return data.slice().sort((a, b) => {
     const aValue = a[field];
     const bValue = b[field];
@@ -26,7 +34,9 @@ export function sortFunc(data: Data[], field: string, direction: Direction): Dat
     if (typeof aValue === 'number' && typeof bValue === 'number') {
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
     }
-    return direction === 'asc' ? aValue.toString().localeCompare(bValue.toString()) : bValue.toString().localeCompare(aValue.toString());
+    return direction === 'asc'
+      ? aValue.toString().localeCompare(bValue.toString())
+      : bValue.toString().localeCompare(aValue.toString());
   });
 }
 export const renderHighlightedText = (text: string, searchTerm: string) => {
@@ -38,7 +48,10 @@ export const renderHighlightedText = (text: string, searchTerm: string) => {
   const highlighted = text.replace(regex, `<mark>${match[0]}</mark>`);
   return highlighted;
 };
-
+/**
+ *
+ * @deprecated This function will be removed in next build, Please use filter function from utils
+ */
 export function filterData(
   data: Data[],
   fieldName: string,
@@ -53,9 +66,11 @@ export function filterData(
       case 'is not':
         return fieldValue !== value;
       case 'is empty':
-        return fieldValue === null || fieldValue === undefined || fieldValue === '';
+        return fieldValue === null || fieldValue === undefined
+        || fieldValue === '';
       case 'is not empty':
-        return fieldValue !== null && fieldValue !== undefined && fieldValue !== '';
+        return fieldValue !== null && fieldValue !== undefined
+         && fieldValue !== '';
       default:
         throw new Error(`Unsupported operator: ${operator}`);
     }
@@ -79,7 +94,10 @@ export function groupByFunc<T extends Record<string, unknown>>(
   return groups;
 }
 
-export function groupByColumnName(data: ObjectUnion[], columnName: string): any[] {
+export function groupByColumnName(
+  data: ObjectUnion[],
+  columnName: string,
+): any[] {
   const groups: any = {};
 
   // Group the data by the column name
@@ -163,6 +181,11 @@ export function downloadCSV(data: Array<ObjectUnion>, filename: string) {
   }
 }
 
+/**
+ * @deprecated This function will be removed in next build, Please use
+ getObjectValue function from utils
+ */
+
 export function getObjectValue(obj: ObjectUnion, key: string): any {
   if (key in obj) {
     const value = obj[key];
@@ -183,9 +206,15 @@ export function getObjectValue(obj: ObjectUnion, key: string): any {
     return undefined;
   }
 }
+
+/**
+ * @deprecated This function will be removed in next build, Please use
+ appendObjectInArray function from utils
+ */
 export function addNewObjectToArray(arr: any) {
   // Find the maximum ID value in the array
-  const maxId = arr.reduce((max: any, obj: any) => Math.max(max, obj.id || 0), 0);
+  const maxId = arr.reduce((max: any, obj: any) =>
+    Math.max(max, obj.id || 0), 0);
 
   const newObjWithId: any = { id: maxId + 1 };
   Object.keys(arr[0]).forEach((key: any) => {

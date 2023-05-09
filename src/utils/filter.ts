@@ -45,7 +45,8 @@ function filterData(
     case 'is empty':
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < data.length; i++) {
-        if (data[i][fieldName] === null || data[i][fieldName] === undefined || data[i][fieldName] === '') {
+        if (data[i][fieldName] === null
+          || data[i][fieldName] === undefined || data[i][fieldName] === '') {
           result.push(data[i]);
         }
       }
@@ -53,7 +54,9 @@ function filterData(
     case 'is not empty':
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < data.length; i++) {
-        if (data[i][fieldName] !== null && data[i][fieldName] !== undefined && data[i][fieldName] !== '') {
+        if (data[i][fieldName] !== null
+           && data[i][fieldName] !== undefined
+            && data[i][fieldName] !== '') {
           result.push(data[i]);
         }
       }
