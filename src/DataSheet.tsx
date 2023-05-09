@@ -149,7 +149,7 @@ function DataSheet() {
             }
             return (
               <div key={key} className="table-group-cell">
-                <div>{displayValue}</div>
+                <div className="table-data-row">{displayValue}</div>
               </div>
             );
           })}
@@ -163,23 +163,23 @@ function DataSheet() {
 
   function renderUniqueKeys(group: any): JSX.Element[] {
     const uniqueKeys = new Set<string>();
-    return group?.items?.length
-      ? group.items.map((item: any) =>
-        // eslint-disable-next-line implicit-arrow-linebreak
-        Object.keys(item).map((key) => {
-          if (!uniqueKeys.has(key)) {
-            uniqueKeys.add(key);
-            return (
-              <div className="table-group-cell" key={key}>
-                <div className="table-group-header">{`${key}`}</div>
-              </div>
-            );
-          }
-          return null;
-        }),
-        // eslint-disable-next-line function-paren-newline
-      )
-      : [];
+    const firstItem = group[0]?.items?.[0];
+
+    if (firstItem) {
+      return Object.keys(firstItem).map((key, index) => {
+        if (!uniqueKeys.has(key)) {
+          uniqueKeys.add(key);
+          return (
+            <div className="table-group-cell" key={index as any}>
+              <div className="table-group-header">{`${key}`}</div>
+            </div>
+          );
+        }
+        return null;
+      });
+    }
+
+    return [];
   }
 
   function printPageByClass(className: string) {
@@ -221,17 +221,23 @@ function DataSheet() {
         <div className={classes.dataSheetBody}>
           {groupData.length
             ? (
-              groupData?.map((group: any) => (
-                <div key={group.groupName} className={classes.tableRow}>
-                  <h2 className="group-selected-header">{group.groupName}</h2>
+              <>
+                <div className={classes.tableRow}>
                   <div className="table-row-group">
                     <div className="table-group-row">
-                      {renderUniqueKeys(group)}
+                      {renderUniqueKeys(groupData)}
                     </div>
-                    {renderItems(group)}
                   </div>
                 </div>
-              ))
+                {groupData?.map((group: any, index: any) => (
+                  <div key={index as any} className={classes.tableRow}>
+                    <h2 className="group-selected-header">{group.groupName}</h2>
+                    <div className="table-row-group">
+                      {renderItems(group)}
+                    </div>
+                  </div>
+                ))}
+              </>
             ) : (
               <>
                 <TableRow>

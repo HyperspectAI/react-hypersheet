@@ -154,9 +154,11 @@ function Toolbar({
             </div>
           ) : null}
         </div>
-        {/* <p className={`${classes.dataSheetToolbar} toolbarItem`}>
-          <MdCalendarViewMonth onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true" />
-          Group
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true">
+            <MdCalendarViewMonth />
+            Group
+          </p>
           {openModal?.grouping ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
               {columns?.map((ele: any) => (
@@ -169,7 +171,7 @@ function Toolbar({
               ))}
             </div>
           ) : null}
-        </p> */}
+        </div>
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('sort'); }} aria-hidden="true">
             <MdOutlineSort />
