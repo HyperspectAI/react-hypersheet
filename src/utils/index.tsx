@@ -124,6 +124,12 @@ export function groupByColumnName(
 
   return result;
 }
+
+/**
+ * @deprecated This function will be removed in next build, Please use
+ flattenObj function from utils
+ */
+
 function flattenObject(obj: ObjectUnion, prefix = ''): ObjectUnion {
   return Object.keys(obj).reduce((acc, key) => {
     // eslint-disable-next-line prefer-template
