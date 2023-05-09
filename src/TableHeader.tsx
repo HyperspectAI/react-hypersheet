@@ -16,7 +16,16 @@ function TableHeader({
     <div className={classes.tableHeader}>
       {
         headers.map((header) => (
-          <Cell value={header.headerName} />
+          header?.isVisible && (
+          <Cell
+            value={header.headerName}
+            searchTerms=""
+            rowHeights={0}
+            handleCellChange={undefined}
+            columnName={undefined}
+            rowIndex={undefined}
+          />
+          )
         ))
       }
     </div>
