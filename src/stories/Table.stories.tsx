@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import Table from '../index';
-import { users } from './mocks/data';
+import randomData from './mocks/200-cols.json';
 
 const meta: Meta<typeof Table> = {
   title: 'Table',
@@ -23,7 +23,7 @@ const getHeaders = (prospects:any) => {
 };
 
 function StoryComp() {
-  const [prospects] = React.useState(users);
+  const [prospects] = React.useState(randomData);
 
   if (!prospects.length) return null;
   return (

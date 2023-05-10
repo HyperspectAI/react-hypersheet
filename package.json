@@ -9,8 +9,6 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "npm run start --prefix example",
-    "concurrently": "concurrently \" npm run watch \" \" npm run start --prefix example \"",
     "build": "rollup -c",
     "watch": "rollup -c --watch",
     "publish": "npm run build && npm publish",
