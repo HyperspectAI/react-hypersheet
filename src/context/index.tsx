@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { createContext, useState } from 'react';
 import { GlobalStateContextVals } from '../types';
@@ -6,7 +7,7 @@ interface ProviderProps {
   children: JSX.Element
 }
 
-export const GlobalStateContext: React.Context<GlobalStateContextVals | {}> = createContext({});
+export const GlobalStateContext: React.Context<GlobalStateContextVals | any> = createContext({});
 
 export function GlobalStateProvider({
   children,

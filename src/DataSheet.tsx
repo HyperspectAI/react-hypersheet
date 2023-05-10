@@ -56,7 +56,10 @@ const renderRow = (
     }
   </>
 );
-const calculateTableBodyPaddingSpace = (isPageHeader: boolean, isPageToolbar: boolean): string => {
+const calculateTableBodyPaddingSpace = (
+  isPageHeader: boolean,
+  isPageToolbar: boolean,
+): string => {
   let val = 0;
   if (isPageHeader && isPageToolbar) return '135px';
   if (isPageHeader) val += 60;
@@ -99,7 +102,9 @@ function DataSheet() {
     setRows(Data);
   }
   function updateVisibility(columnName: string, value: boolean): void {
-    const index = headers.findIndex((column: any) => column.fieldName === columnName);
+    const index = headers.findIndex(
+      (column: any) => column.fieldName === columnName,
+    );
     const newColumns = [...headers];
     newColumns[index].isVisible = value;
     setHeaders(newColumns);
@@ -186,13 +191,16 @@ function DataSheet() {
         }
         return null;
       });
-      return elements.filter((element: any) => element !== null) as JSX.Element[];
+      return elements.filter(
+        (element: any) => element !== null,
+      ) as JSX.Element[];
     }
 
     return [];
   }
 
   function printPageByClass(className: string) {
+    // eslint-disable-next-line max-len
     const printContent = document?.getElementsByClassName(className)[0]?.innerHTML;
     const originalContent = document.body.innerHTML;
     document.body.innerHTML = printContent;
@@ -203,10 +211,17 @@ function DataSheet() {
   return (
     <>
       <div className={classes.fixedTop}>
-        {commonState.showPageHeader && <PageHeader docTitle={commonState.docTitle} />}
+        {commonState.showPageHeader
+          && <PageHeader docTitle={commonState.docTitle} />}
         {commonState.showToolbar && (
           <Toolbar
-            style={{ 'datasheet-toolbar': commonState.showPageHeader ? { top: '-10px' } : { top: 0 } }}
+            style={
+              {
+                'datasheet-toolbar': commonState.showPageHeader
+                  ? { top: '-10px' }
+                  : { top: 0 },
+              }
+            }
             handleSort={onSort}
             handleSearch={onSearch}
             columns={headers}
