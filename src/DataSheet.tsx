@@ -25,6 +25,7 @@ const renderRow = (
   columns: any,
   handleCellChange: any,
   rowIndex: number,
+  rowWidth: number,
 ) => (
   <>
     {
@@ -45,6 +46,7 @@ const renderRow = (
                 handleCellChange={handleCellChange}
                 columnName={k}
                 rowIndex={rowIndex}
+                rowWidths={rowWidth}
               />
             )
           );
@@ -74,6 +76,7 @@ function DataSheet() {
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
+  const [rowWidth, setRowWidth] = useState<number>(0);
 
   function onSort(filterOption: string, option: any): void {
     const sortData = sortFunc(rows, filterOption, option);
@@ -86,6 +89,11 @@ function DataSheet() {
   function RowHeight(height: number): void {
     setRowHeight(height);
   }
+
+  function RowWidth(height: number): void {
+    setRowWidth(height);
+  }
+
   function filter(fieldName: string, operator: any, value: any): void {
     const Data = filterData(rows, fieldName, operator, value);
     setRows(Data);
@@ -150,7 +158,7 @@ function DataSheet() {
             }
             return (
               <div key={key} className="table-group-cell">
-                <div>{displayValue}</div>
+                <div className="table-data-row">{displayValue}</div>
               </div>
             );
           })}
@@ -164,23 +172,24 @@ function DataSheet() {
 
   function renderUniqueKeys(group: any): JSX.Element[] {
     const uniqueKeys = new Set<string>();
-    return group?.items?.length
-      ? group.items.map((item: any) =>
-        // eslint-disable-next-line implicit-arrow-linebreak
-        Object.keys(item).map((key) => {
-          if (!uniqueKeys.has(key)) {
-            uniqueKeys.add(key);
-            return (
-              <div className="table-group-cell" key={key}>
-                <div className="table-group-header">{`${key}`}</div>
-              </div>
-            );
-          }
-          return null;
-        }),
-        // eslint-disable-next-line function-paren-newline
-      )
-      : [];
+    const firstItem = group[0]?.items?.[0];
+
+    if (firstItem) {
+      const elements = Object.keys(firstItem).map((key, index) => {
+        if (!uniqueKeys.has(key)) {
+          uniqueKeys.add(key);
+          return (
+            <div className="table-group-cell" key={index as any}>
+              <div className="table-group-header">{`${key}`}</div>
+            </div>
+          );
+        }
+        return null;
+      });
+      return elements.filter((element: any) => element !== null) as JSX.Element[];
+    }
+
+    return [];
   }
 
   function printPageByClass(className: string) {
@@ -202,6 +211,7 @@ function DataSheet() {
             handleSearch={onSearch}
             columns={headers}
             handleRowHeightChange={RowHeight}
+            handleRowWidthChange={RowWidth}
             handleFilter={filter}
             handleHideColumns={updateVisibility}
             handleGrouping={groupByField}
@@ -222,17 +232,23 @@ function DataSheet() {
         <div className={classes.dataSheetBody}>
           {groupData.length
             ? (
-              groupData?.map((group: any) => (
-                <div key={group.groupName} className={classes.tableRow}>
-                  <h2 className="group-selected-header">{group.groupName}</h2>
+              <>
+                <div className={classes.tableRow}>
                   <div className="table-row-group">
                     <div className="table-group-row">
-                      {renderUniqueKeys(group)}
+                      {renderUniqueKeys(groupData)}
                     </div>
-                    {renderItems(group)}
                   </div>
                 </div>
-              ))
+                {groupData?.map((group: any, index: any) => (
+                  <div key={index as any} className={classes.tableRow}>
+                    <h2 className="group-selected-header">{group.groupName}</h2>
+                    <div className="table-row-group">
+                      {renderItems(group)}
+                    </div>
+                  </div>
+                ))}
+              </>
             ) : (
               <>
                 <TableRow>
@@ -251,6 +267,7 @@ function DataSheet() {
                               headers,
                               handleCellChange,
                               i1,
+                              rowWidth,
                             )
                           }
                         </TableData>

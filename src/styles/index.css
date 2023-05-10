@@ -126,6 +126,13 @@ body {
     border-left: none;
 }
 
+.table-data-row {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 140px;
+}
+
 .table-group-cell {
     border: solid 1px #e1e1e1;
     display: table-cell;
@@ -133,11 +140,16 @@ body {
     font-size: 13px;
     border-top: none;
     border-left: none;
+    min-width: 150px;
 }
 
 .table-group-header {
     font-weight: 600;
     text-transform: uppercase;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 140px;
 }
 
 .group-selected-header {
