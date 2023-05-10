@@ -83,7 +83,6 @@ function DataSheet() {
 
   function onSort(filterOption: string, option: any): void {
     const sortData = sortFunc(rows, filterOption, option);
-    console.log({ rows, filterOption, option });
     setRows(sortData);
   }
   function onSearch(searchValue: string): void {
