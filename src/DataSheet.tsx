@@ -25,6 +25,7 @@ const renderRow = (
   columns: any,
   handleCellChange: any,
   rowIndex: number,
+  rowWidth: number,
 ) => (
   <>
     {
@@ -45,6 +46,7 @@ const renderRow = (
                 handleCellChange={handleCellChange}
                 columnName={k}
                 rowIndex={rowIndex}
+                rowWidths={rowWidth}
               />
             )
           );
@@ -74,6 +76,7 @@ function DataSheet() {
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(0);
+  const [rowWidth, setRowWidth] = useState<number>(0);
 
   function onSort(filterOption: string, option: any): void {
     const sortData = sortFunc(rows, filterOption, option);
@@ -85,6 +88,11 @@ function DataSheet() {
   function RowHeight(height: number): void {
     setRowHeight(height);
   }
+
+  function RowWidth(height: number): void {
+    setRowWidth(height);
+  }
+
   function filter(fieldName: string, operator: any, value: any): void {
     const Data = filterData(rows, fieldName, operator, value);
     setRows(Data);
@@ -201,6 +209,7 @@ function DataSheet() {
             handleSearch={onSearch}
             columns={headers}
             handleRowHeightChange={RowHeight}
+            handleRowWidthChange={RowWidth}
             handleFilter={filter}
             handleHideColumns={updateVisibility}
             handleGrouping={groupByField}
@@ -256,6 +265,7 @@ function DataSheet() {
                               headers,
                               handleCellChange,
                               i1,
+                              rowWidth,
                             )
                           }
                         </TableData>

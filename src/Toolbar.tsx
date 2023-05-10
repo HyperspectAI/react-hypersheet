@@ -32,7 +32,8 @@ interface Props {
   handleGrouping: any,
   handleDownloadData: any,
   handlePrint: any,
-  handleNewRow: any
+  handleNewRow: any,
+  handleRowWidthChange: any
 }
 function Toolbar({
   style,
@@ -46,6 +47,7 @@ function Toolbar({
   handleDownloadData,
   handlePrint,
   handleNewRow,
+  handleRowWidthChange,
 }: Props) {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState({
@@ -55,6 +57,7 @@ function Toolbar({
     rowHeight: false,
     sort: false,
     other: false,
+    rowWidth: false,
   });
 
   const handleModalToggle = (modalName: string) => {
@@ -71,6 +74,7 @@ function Toolbar({
   };
   const [selectSortField, setSelectSortField] = useState('');
   const [rowHeight, setRowHeight] = useState<number>(50);
+  const [rowWidth, setRowWidth] = useState<number>(50);
   const [rowHeightOptions] = useState<number[]>([100, 110, 120, 130]);
   const [filterData, setFilterData] = useState({
     fieldName: '',
@@ -86,6 +90,12 @@ function Toolbar({
     const newHeight = parseInt(event.target.value, 10);
     setRowHeight(parseInt(event.target.value, 10));
     handleRowHeightChange(newHeight);
+  };
+
+  const handleRowWidth = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newHeight = parseInt(event.target.value, 10);
+    setRowWidth(parseInt(event.target.value, 10));
+    handleRowWidthChange(newHeight);
   };
 
   const handleOrderChange = (order: any) => {
@@ -212,6 +222,27 @@ function Toolbar({
             <div className={`${classes.dropdownList} fieldDropdown`}>
               <div className="select-field">
                 <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
+                  {rowHeightOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                      pixels
+                    </option>
+                  ))}
+                </select>
+                <MdExpandMore />
+              </div>
+            </div>
+          ) : null}
+        </div>
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+          <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowWidth'); }} aria-hidden="true">
+            <MdCalendarViewMonth />
+            Row Width
+          </p>
+          {openModal?.rowWidth ? (
+            <div className={`${classes.dropdownList} fieldDropdown`}>
+              <div className="select-field">
+                <select id="row-height" value={rowWidth} onChange={handleRowWidth}>
                   {rowHeightOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
