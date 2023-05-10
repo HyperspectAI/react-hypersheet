@@ -16,7 +16,7 @@
     "publish": "npm run build && npm publish",
     "rollup": "rollup -c",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint . && tsc --noEmit",
     "lint:fix": "eslint . --fix",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
