@@ -174,7 +174,7 @@ function DataSheet() {
     const firstItem = group[0]?.items?.[0];
 
     if (firstItem) {
-      return Object.keys(firstItem).map((key, index) => {
+      const elements = Object.keys(firstItem).map((key, index) => {
         if (!uniqueKeys.has(key)) {
           uniqueKeys.add(key);
           return (
@@ -185,6 +185,7 @@ function DataSheet() {
         }
         return null;
       });
+      return elements.filter((element: any) => element !== null) as JSX.Element[];
     }
 
     return [];
