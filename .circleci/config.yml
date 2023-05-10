@@ -1,0 +1,19 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.1.0
+jobs:
+  lint-and-build-code:
+    docker:
+      - image: cimg/node:20.1.0
+    steps:  
+      - checkout
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
+      - run: |
+           npm run lint
+           npm run build
+workflows:
+  build:
+    jobs:
+      - lint-and-build-code
