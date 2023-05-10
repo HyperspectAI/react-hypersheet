@@ -24,6 +24,7 @@ function TableHeader({
             handleCellChange={undefined}
             columnName={undefined}
             rowIndex={undefined}
+            rowWidths={0}
           />
           )
         ))

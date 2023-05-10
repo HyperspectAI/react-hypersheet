@@ -21,8 +21,18 @@ function PageHeader({
   const classes = useStyles();
   return (
     <div className={classes.pageHeader} style={style['page-header']}>
-      <div className={clsx(classes.container, classes.dFlex, classes.alignItemsCenter)}>
-        <div className={clsx(`${classes.pageHeader} pageTitle`, classes.dFlex, classes.alignItemsCenter)}>
+      <div className={
+        clsx(classes.container, classes.dFlex, classes.alignItemsCenter)
+      }
+      >
+        <div className={
+          clsx(
+            `${classes.pageHeader} pageTitle`,
+            classes.dFlex,
+            classes.alignItemsCenter,
+          )
+        }
+        >
           <MdOutlineInsertDriveFile
             color="white"
             style={{

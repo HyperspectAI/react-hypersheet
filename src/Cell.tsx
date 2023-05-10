@@ -40,7 +40,10 @@ function Cell({
   };
   if (editing) {
     return (
-      <div className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}>
+      <div className={
+        clsx(classes.tableCell, isSelected && classes.selectedTableCell)
+      }
+      >
         <input
           type="text"
           value={currentValue}
@@ -58,11 +61,15 @@ function Cell({
   return (
     <div
       style={{ height: rowHeights, width: rowWidths }}
-      className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
+      className={
+        clsx(classes.tableCell, isSelected && classes.selectedTableCell)
+      }
       onClick={() => setIsSelected(true)}
       role="none"
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: renderHighlightedText(value, searchTerms) }}
+      dangerouslySetInnerHTML={
+        { __html: renderHighlightedText(value, searchTerms) }
+      }
       onDoubleClick={handleDoubleClick}
     />
   );
