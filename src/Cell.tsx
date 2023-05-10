@@ -10,6 +10,7 @@ interface Props {
   handleCellChange: any;
   columnName: any;
   rowIndex: any;
+  rowWidths: number;
 }
 
 function Cell({
@@ -19,6 +20,7 @@ function Cell({
   handleCellChange,
   columnName,
   rowIndex,
+  rowWidths,
 }: Props) {
   const classes = useStyles();
   const [isSelected, setIsSelected] = React.useState(false);
@@ -55,7 +57,7 @@ function Cell({
 
   return (
     <div
-      style={{ height: rowHeights }}
+      style={{ height: rowHeights, width: rowWidths }}
       className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
       onClick={() => setIsSelected(true)}
       role="none"
