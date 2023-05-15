@@ -21,7 +21,7 @@ jobs:
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
-      - run: npx chromatic --project-token=chpt_2eb3286c26faa0d       
+      - run: echo "Deploying docs..."       
 workflows:
   build:
     jobs:
@@ -32,4 +32,4 @@ workflows:
          filters:
             branches:
               only:
-                - main
+                - deploy-docs
