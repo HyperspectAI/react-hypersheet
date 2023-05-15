@@ -39,6 +39,10 @@ function StoryComp() {
   const [presetData, setPresetData] = React.useState<IPresetData | null>(null);
   const prospects = getProspects(presetData as any);
 
+  React.useEffect(() => {
+    console.log(`Number of rows passed${prospects?.length}`);
+  }, [prospects]);
+
   if (!presetData) {
     return (
       <div style={{
