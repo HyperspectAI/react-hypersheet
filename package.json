@@ -1,6 +1,6 @@
 {
   "name": "react-hypersheet",
-  "version": "1.0.1-beta.1",
+  "version": "1.0.1-beta.2",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -17,7 +17,7 @@
     "lint": "eslint . && tsc --noEmit",
     "lint:fix": "eslint . --fix",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build:storybook": "storybook build",
     "prepare": "husky install",
     "prebuild": "rimraf dist",
     "git:clean": "git branch | grep -v main | xargs git branch -D"
