@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import clsx from 'clsx';
 import { renderHighlightedText } from './utils';
@@ -21,7 +22,7 @@ function Cell({
   columnName,
   rowIndex,
   rowWidths,
-}: Props) {
+}: any) {
   const classes = useStyles();
   const [isSelected, setIsSelected] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
@@ -57,7 +58,6 @@ function Cell({
 
     );
   }
-
   return (
     <div
       style={{ height: rowHeights, width: rowWidths }}
@@ -67,11 +67,13 @@ function Cell({
       onClick={() => setIsSelected(true)}
       role="none"
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={
-        { __html: renderHighlightedText(value, searchTerms) }
-      }
+      // dangerouslySetInnerHTML={
+      //   { __html: renderHighlightedText(value, searchTerms) }
+      // }
       onDoubleClick={handleDoubleClick}
-    />
+    >
+      {value}
+    </div>
   );
 }
 
