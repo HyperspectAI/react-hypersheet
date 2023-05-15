@@ -13,7 +13,23 @@ jobs:
       - run: |
            npm run lint
            npm run build
+  publish-docs:
+    docker:
+      - image: cimg/node:20.1.0
+    steps:  
+      - checkout
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
+      - run: npx chromatic --project-token=chpt_2eb3286c26faa0d       
 workflows:
   build:
     jobs:
       - lint-and-build-code
+  deploy-storybook:
+    jobs:
+      - publish-docs:
+         filters:
+            branches:
+              only:
+                - main

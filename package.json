@@ -1,6 +1,6 @@
 {
   "name": "react-hypersheet",
-  "version": "1.0.1-beta.1",
+  "version": "1.0.1-beta.2",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -56,6 +56,7 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-jest": "^29.5.0",
     "babel-loader": "^8.3.0",
+    "chromatic": "^6.17.4",
     "concurrently": "^7.6.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -93,5 +94,7 @@
     "jss-plugin-nested": "^10.10.0",
     "react-icons": "^4.8.0",
     "react-jss": "^10.10.0"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "react-hypersheet@1.0.1-beta.2"
 }
