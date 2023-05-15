@@ -1,7 +1,5 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import useStyles from './styles';
 import { GlobalStateContext } from './context';
 import PageHeader from './PageHeader';
@@ -18,44 +16,6 @@ import {
   sortFunc,
 } from './utils';
 
-const renderRow = (
-  rowObj: any,
-  searchTerm: string,
-  rowHeight: number,
-  columns: any,
-  handleCellChange: any,
-  rowIndex: number,
-  rowWidth: number,
-) => (
-  <>
-    {
-      Object.keys(rowObj).map((k: string, index: any): JSX.Element | null => {
-        if (['object', 'array'].includes(typeof rowObj[k])) {
-          rowObj[k] = '';
-        } else if (['boolean', 'number'].includes(typeof rowObj[k])) {
-          return rowObj[k] = rowObj[k].toString();
-        }
-        if (['string'].includes(typeof rowObj[k])) {
-          return (
-            columns[index]?.isVisible && (
-              <Cell
-                value={rowObj[k]}
-                searchTerms={searchTerm}
-                key={index as any}
-                rowHeights={rowHeight}
-                handleCellChange={handleCellChange}
-                columnName={k}
-                rowIndex={rowIndex}
-                rowWidths={rowWidth}
-              />
-            )
-          );
-        }
-        return null;
-      })
-    }
-  </>
-);
 const calculateTableBodyPaddingSpace = (
   isPageHeader: boolean,
   isPageToolbar: boolean,
@@ -206,7 +166,41 @@ function DataSheet() {
     window.print();
     document.body.innerHTML = originalContent;
   }
+  function splitArrayIntoChunks(array: any, chunkSize: number) {
+    const result = [];
 
+    for (let i = 0; i < array.length; i += chunkSize) {
+      result.push(...array.slice(i, i + chunkSize));
+    }
+
+    return result;
+  }
+
+  const cellRows = useMemo(() => {
+    const visibleData: any = splitArrayIntoChunks(rows, 10);
+    const data = visibleData.map((rowObj: any[], rowIndex: any) => (
+      <TableRow key={rowIndex as any}>
+        <TableData>
+          {Object.keys(visibleData[0]).map(
+            (k: any, index: any) => (
+              <Cell
+                value={rowObj[k]}
+                searchTerms={searchTerm}
+                key={index as any}
+                rowHeights={rowHeight}
+                handleCellChange={handleCellChange}
+                columnName={k}
+                rowIndex={rowIndex as any}
+                rowWidths={rowWidth}
+              />
+            ),
+          )}
+        </TableData>
+      </TableRow>
+    ));
+    const filteredRows = data.filter((row: any) => row !== null);
+    return filteredRows;
+  }, [rows]);
   return (
     <>
       <div className={classes.fixedTop}>
@@ -270,23 +264,7 @@ function DataSheet() {
                 </TableRow>
                 {
                   rows?.length ? (
-                    rows.map((rowObj: any, i1: any) => (
-                      <TableRow key={i1 as any}>
-                        <TableData>
-                          {
-                            renderRow(
-                              rowObj,
-                              searchTerm,
-                              rowHeight,
-                              headers,
-                              handleCellChange,
-                              i1,
-                              rowWidth,
-                            )
-                          }
-                        </TableData>
-                      </TableRow>
-                    ))
+                    cellRows
                   ) : <span>Data Not Found</span>
                 }
               </>

@@ -256,7 +256,7 @@ function Toolbar({
           ) : null}
         </div>
 
-        <div className="search-box">
+        {/* <div className="search-box">
           <input
             placeholder="Search..."
             type="text"
@@ -266,7 +266,7 @@ function Toolbar({
           <button type="submit" className="search-icon">
             <MdSearch />
           </button>
-        </div>
+        </div> */}
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('other'); }} aria-hidden="true">
             <MdOutlineMenu />
