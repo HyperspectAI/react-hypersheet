@@ -21,7 +21,7 @@ jobs:
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
-      - run: echo "Deploying docs..."       
+      - run: npm run deploy-storybook
 workflows:
   build:
     jobs:
