@@ -22,6 +22,8 @@ jobs:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
       - run: |
+          git config --global user.email "ankur4736@gmail.com"
+          git config --global user.name "developeranku"
           npm run build-storybook
           npm run deploy-storybook
 workflows:
