@@ -1,6 +1,6 @@
 {
   "name": "react-hypersheet",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -11,7 +11,6 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c --watch",
-    "publish": "npm publish",
     "rollup": "rollup -c",
     "test": "jest",
     "lint": "eslint . && tsc --noEmit",
@@ -31,9 +30,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HyperspectAI/hyperspect-ui-table/issues"
+    "url": "https://github.com/HyperspectAI/react-hypersheet/issues"
   },
-  "homepage": "https://github.com/HyperspectAI/hyperspect-ui-table#readme",
+  "homepage": "https://hyperspectai.github.io/react-hypersheet/",
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.21.5",
