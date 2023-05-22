@@ -29,7 +29,7 @@ const styles = {
     textAlign: 'right',
   },
   fixedTop: {
-    position: 'fixed',
+    // position: 'fixed',
     width: '100%',
   },
   pageHeader: {

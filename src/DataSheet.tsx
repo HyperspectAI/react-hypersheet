@@ -16,17 +16,6 @@ import Filter from './utils/filter';
 import Sort from './utils/sort';
 import AppendObjectInArray from './utils/appendObjectInArray';
 
-const calculateTableBodyPaddingSpace = (
-  isPageHeader: boolean,
-  isPageToolbar: boolean,
-): string => {
-  let val = 0;
-  if (isPageHeader && isPageToolbar) return '135px';
-  if (isPageHeader) val += 60;
-  if (isPageToolbar) val += 50;
-  return val.toString().concat('px');
-};
-
 function DataSheet() {
   const classes = useStyles();
   const {
@@ -231,13 +220,13 @@ function DataSheet() {
           />
         )}
       </div>
-      <div style={{
+      {/* <div style={{
         paddingTop: calculateTableBodyPaddingSpace(
           commonState.showPageHeader,
           commonState.showToolbar,
         ),
       }}
-      />
+      /> */}
       <div className={`${classes.dataSheetBase} printClass`}>
         <div className={classes.dataSheetBody}>
           {groupData.length
