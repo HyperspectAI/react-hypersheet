@@ -9,12 +9,12 @@ import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
 import {
-  addNewObjectToArray,
   downloadCSV,
-  filterData,
   groupByColumnName,
-  sortFunc,
 } from './utils';
+import Filter from './utils/filter';
+import Sort from './utils/sort';
+import AppendObjectInArray from './utils/appendObjectInArray';
 
 const calculateTableBodyPaddingSpace = (
   isPageHeader: boolean,
@@ -35,29 +35,29 @@ function DataSheet() {
     commonState,
     setHeaders,
     setRows,
+    setIsClear,
+    setColumnsWidthHeight,
   }: any = React.useContext(GlobalStateContext);
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [rowHeight, setRowHeight] = useState<number>(0);
-  const [rowWidth, setRowWidth] = useState<number>(0);
 
   function onSort(filterOption: string, option: any): void {
-    const sortData = sortFunc(rows, filterOption, option);
+    const sortData = Sort(rows, filterOption, option);
     setRows(sortData);
   }
   function onSearch(searchValue: string): void {
     setSearchTerm(searchValue);
   }
-  function RowHeight(height: number): void {
-    setRowHeight(height);
+  function RowHeight(heights: number): void {
+    setColumnsWidthHeight((old: any) => ({ ...old, height: heights }));
   }
 
-  function RowWidth(height: number): void {
-    setRowWidth(height);
+  function RowWidth(widths: number): void {
+    setColumnsWidthHeight((old: any) => ({ ...old, width: widths }));
   }
 
   function filter(fieldName: string, operator: any, value: any): void {
-    const Data = filterData(rows, fieldName, operator, value);
+    const Data = Filter(rows, fieldName, operator, value);
     setRows(Data);
   }
   function updateVisibility(columnName: string, value: boolean): void {
@@ -85,7 +85,10 @@ function DataSheet() {
     setRows(updatedRows);
   };
   function addTableRow() {
-    setRows(addNewObjectToArray(rows));
+    setRows(AppendObjectInArray(rows));
+  }
+  function handleClear() {
+    setIsClear(true);
   }
 
   interface Item {
@@ -187,11 +190,9 @@ function DataSheet() {
                 value={rowObj[k]}
                 searchTerms={searchTerm}
                 key={index as any}
-                rowHeights={rowHeight}
                 handleCellChange={handleCellChange}
                 columnName={k}
                 rowIndex={rowIndex as any}
-                rowWidths={rowWidth}
               />
             ),
           )}
@@ -226,6 +227,7 @@ function DataSheet() {
             handleDownloadData={downloadData}
             handlePrint={printPageByClass}
             handleNewRow={addTableRow}
+            handleClear={handleClear}
           />
         )}
       </div>
@@ -260,7 +262,9 @@ function DataSheet() {
             ) : (
               <>
                 <TableRow>
-                  <TableHeader headers={headers} />
+                  <TableHeader
+                    headers={headers}
+                  />
                 </TableRow>
                 {
                   rows?.length ? (

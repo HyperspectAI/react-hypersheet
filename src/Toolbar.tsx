@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   MdRemoveRedEye,
@@ -14,9 +14,11 @@ import {
   MdExpandMore,
   MdFilterAlt,
   MdOutlineMenu,
+  MdClose,
 } from 'react-icons/md';
 import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import useStyles from './styles';
+import { useOnClickOutside } from './utils';
 
 type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 interface Props {
@@ -33,7 +35,8 @@ interface Props {
   handleDownloadData: any,
   handlePrint: any,
   handleNewRow: any,
-  handleRowWidthChange: any
+  handleRowWidthChange: any,
+  handleClear: any
 }
 function Toolbar({
   style,
@@ -48,8 +51,10 @@ function Toolbar({
   handlePrint,
   handleNewRow,
   handleRowWidthChange,
+  handleClear,
 }: Props) {
   const classes = useStyles();
+  const refs: any = useRef();
   const [openModal, setOpenModal] = useState({
     hideFields: false,
     filter: false,
@@ -106,9 +111,20 @@ function Toolbar({
       handleFilter(filterData?.fieldName, filterData?.operator, filterData?.value);
     }
   };
+  useOnClickOutside(refs, () => {
+    setOpenModal({
+      hideFields: false,
+      filter: false,
+      grouping: false,
+      rowHeight: false,
+      sort: false,
+      other: false,
+      rowWidth: false,
+    });
+  });
 
   return (
-    <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
+    <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']} ref={refs}>
       <div className={`${classes.dataSheetToolbar} toolbarList`}>
 
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
@@ -159,7 +175,11 @@ function Toolbar({
                   </button>
 
                 </div>
-
+                <div className="icon-button">
+                  <button>
+                    <MdClose onClick={handleClear} />
+                  </button>
+                </div>
               </div>
             </div>
           ) : null}
@@ -208,7 +228,11 @@ function Toolbar({
                     <TbSortDescending />
                   </button>
                 </div>
-
+                <div className="icon-button">
+                  <button>
+                    <MdClose onClick={handleClear} />
+                  </button>
+                </div>
               </div>
             </div>
           ) : null}

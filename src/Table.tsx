@@ -29,6 +29,10 @@ function Test({
       docTitle,
     });
   }, []);
+  if (Global.isClear) {
+    Global.setRows(rows);
+    Global.setIsClear(false);
+  }
   return (<DataSheet />);
 }
 function Table(props: any) {

@@ -20,11 +20,9 @@ function TableHeader({
           <Cell
             value={header.headerName}
             searchTerms=""
-            rowHeights={0}
             handleCellChange={undefined}
             columnName={undefined}
             rowIndex={undefined}
-            rowWidths={0}
           />
           )
         ))
