@@ -149,31 +149,30 @@ export function groupByColumnName(
   data: ObjectUnion[],
   columnName: string,
 ): any[] {
-  const groups: any = {};
+  const groups: Record<string, any[]> = {}; // Initialize an empty object to store the groups
 
   // Group the data by the column name
-  data.forEach((item: any) => {
-    const groupValue = item[columnName];
-    if (!groups[groupValue]) {
-      groups[groupValue] = [];
+  for (const item of data) { // Iterate over each item in the data array
+    const groupValue = item[columnName]; // Get the value of the specified column for the current item
+    if (!(groupValue in groups)) { // Check if a group with the current value exists in the groups object
+      groups[groupValue] = []; // If not, create an empty array for that group
     }
-    groups[groupValue].push(item);
-  });
+    groups[groupValue].push(item); // Add the current item to the corresponding group
+  }
 
-  const result: any[] = [];
-  // eslint-disable-next-line no-restricted-syntax
+  const result: any[] = []; // Initialize an empty array to store the result
+
+  // Iterate over the groups and create the result array
   for (const groupName in groups) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (groups.hasOwnProperty(groupName)) {
+    if (Object.prototype.hasOwnProperty.call(groups, groupName)) { // Check if the current group is a direct property of the groups object
       result.push({
-        // eslint-disable-next-line object-shorthand
-        groupName: groupName,
-        items: groups[groupName],
+        groupName, // Store the group name in the result object
+        items: groups[groupName], // Store the array of items belonging to the group in the result object
       });
     }
   }
 
-  return result;
+  return result; // Return the final result array
 }
 
 /**
