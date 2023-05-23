@@ -263,24 +263,32 @@ export function downloadCSV(data: Array<ObjectUnion>, filename: string) {
  getObjectValue function from utils
  */
 
-export function getObjectValue(obj: ObjectUnion, key: string): any {
-  if (key in obj) {
-    const value = obj[key];
-    if (typeof value === 'object' && value !== null) {
-      return Object.values(value)
-        // eslint-disable-next-line no-confusing-arrow
-        .map((nestedValue) =>
-          typeof nestedValue === 'object' && nestedValue !== null
-            ? getObjectValue(nestedValue, Object.keys(nestedValue)[0])
-            : nestedValue,
-        // eslint-disable-next-line function-paren-newline
-        )
-        .join(',');
+export function getObjectValue(obj: Record<string, any>, key: string): any {
+  if (key in obj) { // Check if the key exists in the object
+    const value = obj[key]; // Get the value associated with the key
+    if (typeof value === 'object' && value !== null) { // Check if the value is an object (excluding null)
+      const nestedValues = []; // Array to store the values of nested objects
+      // eslint-disable-next-line guard-for-in
+      for (const nestedKey in value) { // Iterate over the properties of the nested object
+        const nestedValue = value[nestedKey]; // Get the value of the nested property
+        if (typeof nestedValue === 'object' && nestedValue !== null) { // Check if the nested value is an object (excluding null)
+          const nestedValueKeys = Object.keys(nestedValue); // Get the keys of the nested object
+          if (nestedValueKeys.length > 0) { // Check if there are any keys in the nested object
+            // Recursively call getObjectValue for nested objects
+            nestedValues.push(getObjectValue(nestedValue, nestedValueKeys[0])); // Get the value of the first nested key
+          }
+        } else {
+          // Store the nested value in the array
+          nestedValues.push(nestedValue);
+        }
+      }
+      // Join the nested values with commas
+      return nestedValues.join(',');
     } else {
-      return value;
+      return value; // Return the value if it's not an object
     }
   } else {
-    return undefined;
+    return undefined; // Key not found in the object
   }
 }
 
