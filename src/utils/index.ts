@@ -296,19 +296,27 @@ export function getObjectValue(obj: Record<string, any>, key: string): any {
  * @deprecated This function will be removed in next build, Please use
  appendObjectInArray function from utils
  */
-export function addNewObjectToArray(arr: any) {
+export function addNewObjectToArray(arr: Array<any>): Array<any> {
   // Find the maximum ID value in the array
-  const maxId = arr.reduce((max: any, obj: any) =>
-    Math.max(max, obj.id || 0), 0);
+  let maxId = 0;
+  for (const obj of arr) { // Iterate over each object in the array
+    if (obj.id && obj.id > maxId) { // Check if the object has an 'id' property and if it's greater than the current maxId
+      maxId = obj.id; // Update the maxId if a higher value is found
+    }
+  }
 
-  const newObjWithId: any = { id: maxId + 1 };
-  Object.keys(arr[0]).forEach((key: any) => {
-    if (key !== 'id') {
-      newObjWithId[key] = key;
+  const newObjWithId: any = { id: maxId + 1 }; // Create a new object with an incremented id
+  const sourceObject = arr[0]; // Assuming at least one object exists in the array, get the first object as a reference
+
+  Object.keys(sourceObject).forEach((key: string) => { // Iterate over the keys of the source object
+    if (key !== 'id') { // Exclude the 'id' key from being copied
+      newObjWithId[key] = sourceObject[key]; // Copy the value from the source object to the new object
     }
   });
+
   // Add the new object to the array
   arr.push(newObjWithId);
+
   // Return the updated array
   return arr;
 }
