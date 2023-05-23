@@ -24,22 +24,49 @@ export function sortFunc(
   field: string,
   direction: Direction,
 ): Data[] {
-  return data.slice().sort((a, b) => {
-    const aValue = a[field];
-    const bValue = b[field];
-    if (aValue === null || aValue === undefined) {
-      return direction === 'asc' ? 1 : -1;
+  // Custom sorting algorithm
+  const customSort = (arr: Data[]): Data[] => {
+    if (arr.length <= 1) {
+      return arr;
     }
-    if (bValue === null || bValue === undefined) {
-      return direction === 'asc' ? -1 : 1;
+
+    // Choose pivot element
+    const pivotIndex = Math.floor(arr.length / 2);
+    const pivot: any = arr[pivotIndex];
+
+    // Partition the array based on pivot value
+    const less: Data[] = [];
+    const equal: Data[] = [];
+    const greater: Data[] = [];
+
+    for (const item of arr) {
+      const value = item[field];
+
+      // Compare field value with pivot
+      if (value === null || value === undefined) {
+        equal.push(item); // Values that are null or undefined are grouped in the 'equal' array
+      } else if (value < pivot[field]) {
+        less.push(item); // Values less than the pivot are grouped in the 'less' array
+      } else if (value > pivot[field]) {
+        greater.push(item); // Values greater than the pivot are grouped in the 'greater' array
+      } else {
+        equal.push(item); // Values equal to the pivot are grouped in the 'equal' array
+      }
     }
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return direction === 'asc' ? aValue - bValue : bValue - aValue;
-    }
-    return direction === 'asc'
-      ? aValue.toString().localeCompare(bValue.toString())
-      : bValue.toString().localeCompare(aValue.toString());
-  });
+
+    // Recursively sort subarrays and combine them
+    return [
+      ...customSort(less),
+      ...equal,
+      ...customSort(greater),
+    ];
+  };
+
+  // Perform custom sorting
+  const sortedData = customSort([...data]);
+
+  // Reverse the sorted array if sorting direction is descending
+  return direction === 'asc' ? sortedData : sortedData.reverse();
 }
 export const renderHighlightedText = (text: string, searchTerm: string) => {
   const regex = new RegExp(searchTerm, 'gi');
@@ -154,17 +181,38 @@ export function groupByColumnName(
  flattenObj function from utils
  */
 
-function flattenObject(obj: ObjectUnion, prefix = ''): ObjectUnion {
-  return Object.keys(obj).reduce((acc, key) => {
-    // eslint-disable-next-line prefer-template
-    const pre = prefix.length ? prefix + '.' : '';
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
-      Object.assign(acc, flattenObject(obj[key], pre + key));
-    } else {
-      acc[pre + key] = obj[key];
+function flattenObject(
+  obj: ObjectUnion,
+  prefix = '',
+  result: ObjectUnion = {},
+): ObjectUnion {
+  // Iterate over each key in the object
+  for (const key in obj) {
+    // Check if the key is a direct property of the object (not inherited)
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      // Get the value corresponding to the key
+      const value = obj[key];
+      // Create the property name by appending the current key to the prefix
+      const prop = prefix ? `${prefix}.${key}` : key;
+      // Check if the value is an object (excluding arrays and null)
+      if (typeof value === 'object'
+        && value !== null
+        && !Array.isArray(value)) {
+        // Recursively flatten the nested object, passing the updated prefix and result object
+        flattenObject(value, prop, result);
+      } else if (Array.isArray(value)) {
+        // If the value is an array, join its elements with a comma and assign to the property
+        // eslint-disable-next-line no-param-reassign
+        result[prop] = value.join(',');
+      } else {
+        // Assign the value directly to the property
+        // eslint-disable-next-line no-param-reassign
+        result[prop] = value;
+      }
     }
-    return acc;
-  }, {} as ObjectUnion);
+  }
+  // Return the flattened object
+  return result;
 }
 
 export function downloadCSV(data: Array<ObjectUnion>, filename: string) {

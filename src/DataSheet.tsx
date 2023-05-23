@@ -12,8 +12,8 @@ import {
   downloadCSV,
   groupByColumnName,
   filterData,
+  sortFunc,
 } from './utils';
-import Sort from './utils/sort';
 import AppendObjectInArray from './utils/appendObjectInArray';
 
 function DataSheet() {
@@ -31,7 +31,7 @@ function DataSheet() {
   const [searchTerm, setSearchTerm] = useState('');
 
   function onSort(filterOption: string, option: any): void {
-    const sortData = Sort(rows, filterOption, option);
+    const sortData = sortFunc(rows, filterOption, option);
     setRows(sortData);
   }
   function onSearch(searchValue: string): void {
