@@ -12,7 +12,11 @@ interface Props {
   rows: any;
   docTitle: string;
 }
-
+/*
+  This function is used as a wrapper component to access props data and set data in context;
+  if it is not used as a wrapper component, the data in context is not set.
+  if need to remove extra function then Create context on this page and assign props value to context
+*/
 function Table(props: Props) {
   const Global: any = useContext(GlobalStateContext);
   useEffect(() => {
