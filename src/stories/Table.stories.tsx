@@ -40,6 +40,7 @@ function StoryComp() {
   const prospects = getProspects(presetData as any);
 
   React.useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log(`Number of rows passed${prospects?.length}`);
   }, [prospects]);
 
