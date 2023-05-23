@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-else-return */
 import { useEffect } from 'react';
@@ -53,46 +54,68 @@ export const renderHighlightedText = (text: string, searchTerm: string) => {
  *
  * @deprecated This function will be removed in next build, Please use filter function from utils
  */
+
+// Function to check if a value is empty
+function isEmpty(value: any): boolean {
+  return value === null || value === undefined || value === '';
+}
+
 export function filterData(
   data: Data[],
   fieldName: string,
   operator: Operator,
   value: any,
 ): Data[] {
-  return data.filter((item) => {
-    const fieldValue = item[fieldName];
-    switch (operator) {
-      case 'is':
-        return fieldValue === value;
-      case 'is not':
-        return fieldValue !== value;
-      case 'is empty':
-        return fieldValue === null || fieldValue === undefined
-        || fieldValue === '';
-      case 'is not empty':
-        return fieldValue !== null && fieldValue !== undefined
-         && fieldValue !== '';
-      default:
-        throw new Error(`Unsupported operator: ${operator}`);
-    }
-  });
-}
-export function groupByFunc<T extends Record<string, unknown>>(
-  array: T[],
-  fieldName: keyof T,
-): Record<string, T[]> {
-  const groups: Record<string, T[]> = {};
-  array.forEach((item) => {
-    const value = item[fieldName];
-    if (value && typeof value === 'string') {
-      if (!groups[value]) {
-        groups[value] = [];
-      }
-      groups[value].push(item);
-    }
-  });
+  const filteredData: Data[] = [];
 
-  return groups;
+  switch (operator) {
+    case 'is':
+      // Iterate over the data array
+      for (const item of data) {
+        // Check if the field value is equal to the given value
+        if (item[fieldName] === value) {
+          // Add the item to the filteredData array
+          filteredData.push(item);
+        }
+      }
+      break;
+    case 'is not':
+      // Iterate over the data array
+      for (const item of data) {
+        // Check if the field value is not equal to the given value
+        if (item[fieldName] !== value) {
+          // Add the item to the filteredData array
+          filteredData.push(item);
+        }
+      }
+      break;
+    case 'is empty':
+      // Iterate over the data array
+      for (const item of data) {
+        // Check if the field value is empty using the isEmpty function
+        if (isEmpty(item[fieldName])) {
+          // Add the item to the filteredData array
+          filteredData.push(item);
+        }
+      }
+      break;
+    case 'is not empty':
+      // Iterate over the data array
+      for (const item of data) {
+        // Check if the field value is not empty using the isEmpty function
+        if (!isEmpty(item[fieldName])) {
+          // Add the item to the filteredData array
+          filteredData.push(item);
+        }
+      }
+      break;
+    default:
+      // Throw an error for unsupported operators
+      throw new Error(`Unsupported operator: ${operator}`);
+  }
+
+  // Return the filteredData array
+  return filteredData;
 }
 
 export function groupByColumnName(

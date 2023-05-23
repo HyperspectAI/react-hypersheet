@@ -12,7 +12,8 @@ interface Props {
   docTitle: string;
 }
 
-function Test({
+// This function is used as a wrapper component to access props data and set data in context; if it is not used as a wrapper component, the data in context is not set.
+function WrapperComponent({
   rows,
   headers,
   showToolbar,
@@ -38,7 +39,7 @@ function Test({
 function Table(props: any) {
   return (
     <GlobalStateProvider>
-      <Test {...props} />
+      <WrapperComponent {...props} />
     </GlobalStateProvider>
   );
 }

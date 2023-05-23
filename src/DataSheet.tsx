@@ -11,8 +11,8 @@ import Cell from './Cell';
 import {
   downloadCSV,
   groupByColumnName,
+  filterData,
 } from './utils';
-import Filter from './utils/filter';
 import Sort from './utils/sort';
 import AppendObjectInArray from './utils/appendObjectInArray';
 
@@ -46,7 +46,7 @@ function DataSheet() {
   }
 
   function filter(fieldName: string, operator: any, value: any): void {
-    const Data = Filter(rows, fieldName, operator, value);
+    const Data = filterData(rows, fieldName, operator, value);
     setRows(Data);
   }
   function updateVisibility(columnName: string, value: boolean): void {
