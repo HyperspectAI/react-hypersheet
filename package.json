@@ -1,6 +1,6 @@
 {
   "name": "react-hypersheet",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -21,6 +21,7 @@
     "prepare": "husky install",
     "prebuild": "rimraf dist",
     "predeploy": "npm run build-storybook",
+    "prepublish": "npm run build",
     "git:clean": "git branch | grep -v main | xargs git branch -D"
   },
   "repository": {
