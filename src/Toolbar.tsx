@@ -124,8 +124,8 @@ function Toolbar({
   });
 
   return (
-    <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']} ref={refs}>
-      <div className={`${classes.dataSheetToolbar} toolbarList`}>
+    <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
+      <div className={`${classes.dataSheetToolbar} toolbarList`} ref={refs}>
 
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('hideFields'); }} aria-hidden="true">
@@ -153,6 +153,7 @@ function Toolbar({
               <div className="filter-row grid">
                 <div className="select-field">
                   <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
+                    <option value="">Select Field</option>
                     {columns?.map((ele: any) => (
                       <option value={ele?.fieldName}>{ele?.fieldName}</option>
                     ))}
@@ -162,13 +163,14 @@ function Toolbar({
 
                 <div className="select-field">
                   <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
+                    <option value="">Select Operator</option>
                     {operators?.map((ele: any) => (
                       <option value={ele}>{ele}</option>
                     ))}
                   </select>
                   <MdExpandMore />
                 </div>
-                <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
+                <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} value={filterData.value} />
                 <div className="icon-button">
                   <button>
                     <MdFilterAlt onClick={handleFilterData} />
@@ -177,7 +179,15 @@ function Toolbar({
                 </div>
                 <div className="icon-button">
                   <button>
-                    <MdClose onClick={handleClear} />
+                    <MdClose onClick={() => {
+                      handleClear();
+                      setFilterData({
+                        fieldName: '',
+                        operator: '',
+                        value: '',
+                      });
+                    }}
+                    />
                   </button>
                 </div>
               </div>
@@ -212,6 +222,7 @@ function Toolbar({
               <div className="sort-row grid">
                 <div className="select-field">
                   <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
+                    <option value="">Select Field</option>
                     {columns?.map((ele: any) => (
                       <option value={ele?.fieldName}>{ele?.fieldName}</option>
                     ))}
@@ -230,7 +241,11 @@ function Toolbar({
                 </div>
                 <div className="icon-button">
                   <button>
-                    <MdClose onClick={handleClear} />
+                    <MdClose onClick={() => {
+                      handleClear();
+                      setSelectSortField('');
+                    }}
+                    />
                   </button>
                 </div>
               </div>
@@ -246,6 +261,7 @@ function Toolbar({
             <div className={`${classes.dropdownList} fieldDropdown`}>
               <div className="select-field">
                 <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
+                  <option value="">Select Height Pixel</option>
                   {rowHeightOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -258,7 +274,7 @@ function Toolbar({
             </div>
           ) : null}
         </div>
-        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+        {/* <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowWidth'); }} aria-hidden="true">
             <MdCalendarViewMonth />
             <span>Row Width</span>
@@ -278,7 +294,7 @@ function Toolbar({
               </div>
             </div>
           ) : null}
-        </div>
+        </div> */}
 
         {/* <div className="search-box">
           <input
