@@ -3,27 +3,27 @@ import React from 'react';
 import clsx from 'clsx';
 import { renderHighlightedText } from './utils';
 import useStyles from './styles';
+import { GlobalStateContext } from './context';
 
 interface Props {
   value: string;
   searchTerms: string;
-  rowHeights: number;
   handleCellChange: any;
   columnName: any;
   rowIndex: any;
-  rowWidths: number;
 }
 
 function Cell({
   value,
   searchTerms,
-  rowHeights,
   handleCellChange,
   columnName,
   rowIndex,
-  rowWidths,
 }: any) {
   const classes = useStyles();
+  const {
+    columnsWidthHeight,
+  }: any = React.useContext(GlobalStateContext);
   const [isSelected, setIsSelected] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
   const [currentValue, setCurrentValue] = React.useState(value);
@@ -41,36 +41,42 @@ function Cell({
   };
   if (editing) {
     return (
-      <div className={
-        clsx(classes.tableCell, isSelected && classes.selectedTableCell)
-      }
-      >
-        <input
-          type="text"
-          value={currentValue}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus
-          className={clsx(classes.selectedTableCellInput)}
-        />
+      <div>
+        <div className={
+          clsx(classes.tableCell, isSelected && classes.selectedTableCell)
+        }
+        >
+          <input
+            type="text"
+            value={currentValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            className={clsx(classes.selectedTableCellInput)}
+          />
+        </div>
       </div>
 
     );
   }
+
   return (
     <div
-      style={{ height: rowHeights, width: rowWidths }}
+      style={{
+        height: columnsWidthHeight.height,
+        width: columnsWidthHeight.width,
+      }}
       className={
         clsx(classes.tableCell, isSelected && classes.selectedTableCell)
       }
-      onClick={() => setIsSelected(true)}
+      // onClick={() => setIsSelected(true)}
       role="none"
-      // eslint-disable-next-line react/no-danger
-      // dangerouslySetInnerHTML={
-      //   { __html: renderHighlightedText(value, searchTerms) }
-      // }
-      onDoubleClick={handleDoubleClick}
+    // eslint-disable-next-line react/no-danger
+    // dangerouslySetInnerHTML={
+    //   { __html: renderHighlightedText(value, searchTerms) }
+    // }
+    // onDoubleClick={handleDoubleClick}
     >
       {value}
     </div>

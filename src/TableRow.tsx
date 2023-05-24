@@ -9,7 +9,7 @@ interface Props {
 function TableRow({ children }: Props) {
   const classes = useStyles();
   return (
-    <div className={classes.tableRow}>
+    <div className={classes.tableHeaderGroup}>
       {children}
     </div>
   );

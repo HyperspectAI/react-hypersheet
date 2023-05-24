@@ -1,5 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import DataSheet from './DataSheet';
 import { GlobalStateContext, GlobalStateProvider } from './context';
 import { HeaderKey } from './types';
@@ -8,35 +9,50 @@ interface Props {
   showPageHeader: boolean;
   showToolbar: boolean;
   headers: HeaderKey[];
-  rows: any[];
+  rows: any;
   docTitle: string;
 }
-
-function Test({
-  rows,
-  headers,
-  showToolbar,
-  showPageHeader,
-  docTitle,
-}: Props) {
-  const Global = React.useContext(GlobalStateContext);
-  React.useEffect(() => {
-    Global.setRows(rows);
-    Global.setHeaders(headers);
+/*
+  This function is used as a wrapper component to access props data and set data in context;
+  if it is not used as a wrapper component, the data in context is not set.
+  if need to remove extra function then Create context on this page and assign props value to context
+*/
+function Table(props: Props) {
+  const Global: any = useContext(GlobalStateContext);
+  useEffect(() => {
+    Global.setRows(props.rows);
+    Global.setHeaders(props.headers);
     Global.setCommonState({
-      showPageHeader,
-      showToolbar,
-      docTitle,
+      showPageHeader: props.showPageHeader,
+      showToolbar: props.showToolbar,
+      docTitle: props.docTitle,
     });
-  }, []);
-  return (<DataSheet />);
+
+    if (Global.isClear) {
+      Global.setRows(props.rows);
+      Global.setIsClear(false);
+    }
+  }, [
+    props.rows,
+    props.headers,
+    props.showPageHeader,
+    props.showToolbar,
+    props.docTitle,
+    Global.isClear,
+  ]);
+
+  return <DataSheet />;
 }
-function Table(props: any) {
+
+export default function WrapperComponent(props: Props) {
   return (
     <GlobalStateProvider>
-      <Test {...props} />
+      <div className="hypersheet-root">
+        <div>
+          <Table {...props} />
+        </div>
+
+      </div>
     </GlobalStateProvider>
   );
 }
-
-export default Table;

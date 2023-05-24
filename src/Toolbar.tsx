@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   MdRemoveRedEye,
@@ -14,9 +14,11 @@ import {
   MdExpandMore,
   MdFilterAlt,
   MdOutlineMenu,
+  MdClose,
 } from 'react-icons/md';
 import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import useStyles from './styles';
+import { useOnClickOutside } from './utils';
 
 type Operator = 'is' | 'is not' | 'is empty' | 'is not empty';
 interface Props {
@@ -33,7 +35,8 @@ interface Props {
   handleDownloadData: any,
   handlePrint: any,
   handleNewRow: any,
-  handleRowWidthChange: any
+  handleRowWidthChange: any,
+  handleClear: any
 }
 function Toolbar({
   style,
@@ -48,8 +51,10 @@ function Toolbar({
   handlePrint,
   handleNewRow,
   handleRowWidthChange,
+  handleClear,
 }: Props) {
   const classes = useStyles();
+  const refs: any = useRef();
   const [openModal, setOpenModal] = useState({
     hideFields: false,
     filter: false,
@@ -106,15 +111,26 @@ function Toolbar({
       handleFilter(filterData?.fieldName, filterData?.operator, filterData?.value);
     }
   };
+  useOnClickOutside(refs, () => {
+    setOpenModal({
+      hideFields: false,
+      filter: false,
+      grouping: false,
+      rowHeight: false,
+      sort: false,
+      other: false,
+      rowWidth: false,
+    });
+  });
 
   return (
     <div className={classes.dataSheetToolbar} style={style['datasheet-toolbar']}>
-      <div className={`${classes.dataSheetToolbar} toolbarList`}>
+      <div className={`${classes.dataSheetToolbar} toolbarList`} ref={refs}>
 
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('hideFields'); }} aria-hidden="true">
             <MdRemoveRedEye />
-            Hide fields
+            <span>Hide fields</span>
           </p>
           {openModal?.hideFields ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
@@ -130,13 +146,14 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('filter'); }} aria-hidden="true">
             <MdFilterList />
-            Filter
+            <span>Filter</span>
           </p>
           {openModal.filter ? (
             <div className={`${classes.dropdownList} filterDropdown`}>
               <div className="filter-row grid">
                 <div className="select-field">
                   <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
+                    <option value="">Select Field</option>
                     {columns?.map((ele: any) => (
                       <option value={ele?.fieldName}>{ele?.fieldName}</option>
                     ))}
@@ -146,20 +163,33 @@ function Toolbar({
 
                 <div className="select-field">
                   <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
+                    <option value="">Select Operator</option>
                     {operators?.map((ele: any) => (
                       <option value={ele}>{ele}</option>
                     ))}
                   </select>
                   <MdExpandMore />
                 </div>
-                <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} />
+                <input type="text" className="field-input" onChange={(e) => setFilterData((old) => ({ ...old, value: e.target.value }))} value={filterData.value} />
                 <div className="icon-button">
                   <button>
                     <MdFilterAlt onClick={handleFilterData} />
                   </button>
 
                 </div>
-
+                <div className="icon-button">
+                  <button>
+                    <MdClose onClick={() => {
+                      handleClear();
+                      setFilterData({
+                        fieldName: '',
+                        operator: '',
+                        value: '',
+                      });
+                    }}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           ) : null}
@@ -167,7 +197,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true">
             <MdCalendarViewMonth />
-            Group
+            <span>Group</span>
           </p>
           {openModal?.grouping ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
@@ -185,13 +215,14 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('sort'); }} aria-hidden="true">
             <MdOutlineSort />
-            Sort
+            <span>Sort</span>
           </p>
           {openModal.sort ? (
             <div className={`${classes.dropdownList} filterDropdown`}>
               <div className="sort-row grid">
                 <div className="select-field">
                   <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
+                    <option value="">Select Field</option>
                     {columns?.map((ele: any) => (
                       <option value={ele?.fieldName}>{ele?.fieldName}</option>
                     ))}
@@ -208,7 +239,15 @@ function Toolbar({
                     <TbSortDescending />
                   </button>
                 </div>
-
+                <div className="icon-button">
+                  <button>
+                    <MdClose onClick={() => {
+                      handleClear();
+                      setSelectSortField('');
+                    }}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           ) : null}
@@ -216,12 +255,13 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowHeight'); }} aria-hidden="true">
             <MdCalendarViewMonth />
-            Row Height
+            <span>Row Height</span>
           </p>
           {openModal?.rowHeight ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
               <div className="select-field">
                 <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
+                  <option value="">Select Height Pixel</option>
                   {rowHeightOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -234,10 +274,10 @@ function Toolbar({
             </div>
           ) : null}
         </div>
-        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+        {/* <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowWidth'); }} aria-hidden="true">
             <MdCalendarViewMonth />
-            Row Width
+            <span>Row Width</span>
           </p>
           {openModal?.rowWidth ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
@@ -254,7 +294,7 @@ function Toolbar({
               </div>
             </div>
           ) : null}
-        </div>
+        </div> */}
 
         {/* <div className="search-box">
           <input

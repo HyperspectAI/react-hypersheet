@@ -9,23 +9,12 @@ import TableHeader from './TableHeader';
 import TableData from './TableData';
 import Cell from './Cell';
 import {
-  addNewObjectToArray,
   downloadCSV,
-  filterData,
   groupByColumnName,
+  filterData,
   sortFunc,
 } from './utils';
-
-const calculateTableBodyPaddingSpace = (
-  isPageHeader: boolean,
-  isPageToolbar: boolean,
-): string => {
-  let val = 0;
-  if (isPageHeader && isPageToolbar) return '135px';
-  if (isPageHeader) val += 60;
-  if (isPageToolbar) val += 50;
-  return val.toString().concat('px');
-};
+import AppendObjectInArray from './utils/appendObjectInArray';
 
 function DataSheet() {
   const classes = useStyles();
@@ -35,11 +24,11 @@ function DataSheet() {
     commonState,
     setHeaders,
     setRows,
+    setIsClear,
+    setColumnsWidthHeight,
   }: any = React.useContext(GlobalStateContext);
   const [groupData, setGroupData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [rowHeight, setRowHeight] = useState<number>(0);
-  const [rowWidth, setRowWidth] = useState<number>(0);
 
   function onSort(filterOption: string, option: any): void {
     const sortData = sortFunc(rows, filterOption, option);
@@ -48,12 +37,12 @@ function DataSheet() {
   function onSearch(searchValue: string): void {
     setSearchTerm(searchValue);
   }
-  function RowHeight(height: number): void {
-    setRowHeight(height);
+  function RowHeight(heights: number): void {
+    setColumnsWidthHeight((old: any) => ({ ...old, height: heights }));
   }
 
-  function RowWidth(height: number): void {
-    setRowWidth(height);
+  function RowWidth(widths: number): void {
+    setColumnsWidthHeight((old: any) => ({ ...old, width: widths }));
   }
 
   function filter(fieldName: string, operator: any, value: any): void {
@@ -85,7 +74,10 @@ function DataSheet() {
     setRows(updatedRows);
   };
   function addTableRow() {
-    setRows(addNewObjectToArray(rows));
+    setRows(AppendObjectInArray(rows));
+  }
+  function handleClear() {
+    setIsClear(true);
   }
 
   interface Item {
@@ -187,11 +179,9 @@ function DataSheet() {
                 value={rowObj[k]}
                 searchTerms={searchTerm}
                 key={index as any}
-                rowHeights={rowHeight}
                 handleCellChange={handleCellChange}
                 columnName={k}
                 rowIndex={rowIndex as any}
-                rowWidths={rowWidth}
               />
             ),
           )}
@@ -226,16 +216,17 @@ function DataSheet() {
             handleDownloadData={downloadData}
             handlePrint={printPageByClass}
             handleNewRow={addTableRow}
+            handleClear={handleClear}
           />
         )}
       </div>
-      <div style={{
+      {/* <div style={{
         paddingTop: calculateTableBodyPaddingSpace(
           commonState.showPageHeader,
           commonState.showToolbar,
         ),
       }}
-      />
+      /> */}
       <div className={`${classes.dataSheetBase} printClass`}>
         <div className={classes.dataSheetBody}>
           {groupData.length
@@ -260,11 +251,16 @@ function DataSheet() {
             ) : (
               <>
                 <TableRow>
-                  <TableHeader headers={headers} />
+                  <TableHeader
+                    headers={headers}
+                  />
                 </TableRow>
                 {
                   rows?.length ? (
-                    cellRows
+                    <div className={classes.tableCellBody}>
+                      {cellRows}
+                    </div>
+
                   ) : <span>Data Not Found</span>
                 }
               </>

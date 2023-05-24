@@ -14,6 +14,11 @@ export function GlobalStateProvider({
 }: ProviderProps) {
   const [headers, setHeaders] = useState([]);
   const [rows, setRows] = useState([]);
+  const [isClear, setIsClear] = useState(false);
+  const [columnsWidthHeight, setColumnsWidthHeight] = useState({
+    width: 120,
+    height: 40,
+  });
   const [commonState, setCommonState] = useState({
     showPageHeader: false,
     showToolbar: false,
@@ -24,9 +29,13 @@ export function GlobalStateProvider({
       headers,
       rows,
       commonState,
+      isClear,
+      columnsWidthHeight,
       setHeaders,
       setRows,
       setCommonState,
+      setIsClear,
+      setColumnsWidthHeight,
     }}
     >
       {children}

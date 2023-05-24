@@ -29,7 +29,7 @@ const styles = {
     textAlign: 'right',
   },
   fixedTop: {
-    position: 'fixed',
+    // position: 'fixed',
     width: '100%',
   },
   pageHeader: {
@@ -84,11 +84,17 @@ const styles = {
     },
   },
   dataSheetBase: {
-    display: 'table',
     width: '100%',
+    display: 'block',
+    whiteSpace: 'nowrap',
+    overflow: 'auto',
+    height: '100%',
   },
   dataSheetBody: {
     // display: 'table-row-group',
+    display: 'table',
+    width: '100%',
+    height: '100%',
   },
   tableHeader: {
     background: '#f2f2f2',
@@ -103,14 +109,23 @@ const styles = {
       },
     },
   },
+  tableHeaderGroup: {
+    display: 'table-header-group',
+  },
   tableData: {
     background: 'white',
     display: 'table-row',
   },
+  tableCellBody: {
+    display: 'table-row-group',
+    width: '100%',
+    height: '100%',
+    overflow: 'auto',
+  },
   tableCell: {
     border: 'solid 1px #e1e1e1',
     maxWidth: '200px',
-    display: 'table-cell',
+    display: 'inline-block',
     padding: '6px',
     borderLeft: 'none',
     borderTop: 'none',
@@ -118,6 +133,7 @@ const styles = {
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
+    verticalAlign: 'middle',
   },
   selectedTableCell: {
     outline: 'solid 1px black',
@@ -135,6 +151,8 @@ const styles = {
     borderRadius: '8px',
     boxShadow: '0 0 1px rgba(0,0,0,0.24), 0 0 2px rgba(0,0,0,0.16), 0 3px 4px rgba(0,0,0,0.06), 0 6px 8px rgba(0,0,0,0.06), 0 12px 16px rgba(0,0,0,0.08), 0 18px 32px rgba(0,0,0,0.06)',
     top: '40px',
+    maxHeight: '300px',
+    overflow: 'auto',
     '&.fieldDropdown': {
       left: '10px',
     },
@@ -150,8 +168,12 @@ const styles = {
     fontSize: '13px',
     fontWeight: '500',
     alignItems: 'center',
-    display: 'flex',
+    display: 'block',
     marginBottom: '5px',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    maxWidth: '100%',
   },
   checkboxLabel: {
     marginLeft: '5px',
@@ -160,6 +182,23 @@ const styles = {
     margin: '0px',
     display: 'flex',
     alignItems: 'center',
+    '& span': {
+      left: '10px',
+      width: 'auto',
+    },
+  },
+  '@media (max-width: 568px)': {
+    dataSheetText: {
+      '& span': {
+        display: 'none',
+      },
+    },
+    dataSheetToolbar: {
+      '&.toolbarItem': {
+        padding: '8px',
+        fontSize: '18px',
+      },
+    },
   },
 };
 
