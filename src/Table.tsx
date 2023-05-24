@@ -38,7 +38,12 @@ function Test({
 function Table(props: any) {
   return (
     <GlobalStateProvider>
-      <Test {...props} />
+      <div className="hypersheet-root">
+        <div>
+          <Test {...props} />
+        </div>
+
+      </div>
     </GlobalStateProvider>
   );
 }

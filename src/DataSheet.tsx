@@ -257,7 +257,10 @@ function DataSheet() {
                 </TableRow>
                 {
                   rows?.length ? (
-                    cellRows
+                    <div className={classes.tableCellBody}>
+                      {cellRows}
+                    </div>
+
                   ) : <span>Data Not Found</span>
                 }
               </>

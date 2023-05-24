@@ -41,19 +41,21 @@ function Cell({
   };
   if (editing) {
     return (
-      <div className={
-        clsx(classes.tableCell, isSelected && classes.selectedTableCell)
-      }
-      >
-        <input
-          type="text"
-          value={currentValue}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus
-          className={clsx(classes.selectedTableCellInput)}
-        />
+      <div>
+        <div className={
+          clsx(classes.tableCell, isSelected && classes.selectedTableCell)
+        }
+        >
+          <input
+            type="text"
+            value={currentValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            className={clsx(classes.selectedTableCellInput)}
+          />
+        </div>
       </div>
 
     );
@@ -70,11 +72,11 @@ function Cell({
       }
       // onClick={() => setIsSelected(true)}
       role="none"
-      // eslint-disable-next-line react/no-danger
-      // dangerouslySetInnerHTML={
-      //   { __html: renderHighlightedText(value, searchTerms) }
-      // }
-      // onDoubleClick={handleDoubleClick}
+    // eslint-disable-next-line react/no-danger
+    // dangerouslySetInnerHTML={
+    //   { __html: renderHighlightedText(value, searchTerms) }
+    // }
+    // onDoubleClick={handleDoubleClick}
     >
       {value}
     </div>

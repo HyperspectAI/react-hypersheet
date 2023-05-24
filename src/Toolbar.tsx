@@ -130,7 +130,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('hideFields'); }} aria-hidden="true">
             <MdRemoveRedEye />
-            Hide fields
+            <span>Hide fields</span>
           </p>
           {openModal?.hideFields ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
@@ -146,7 +146,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('filter'); }} aria-hidden="true">
             <MdFilterList />
-            Filter
+            <span>Filter</span>
           </p>
           {openModal.filter ? (
             <div className={`${classes.dropdownList} filterDropdown`}>
@@ -187,7 +187,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('grouping'); }} aria-hidden="true">
             <MdCalendarViewMonth />
-            Group
+            <span>Group</span>
           </p>
           {openModal?.grouping ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
@@ -205,7 +205,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('sort'); }} aria-hidden="true">
             <MdOutlineSort />
-            Sort
+            <span>Sort</span>
           </p>
           {openModal.sort ? (
             <div className={`${classes.dropdownList} filterDropdown`}>
@@ -240,7 +240,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowHeight'); }} aria-hidden="true">
             <MdCalendarViewMonth />
-            Row Height
+            <span>Row Height</span>
           </p>
           {openModal?.rowHeight ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
@@ -261,7 +261,7 @@ function Toolbar({
         <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowWidth'); }} aria-hidden="true">
             <MdCalendarViewMonth />
-            Row Width
+            <span>Row Width</span>
           </p>
           {openModal?.rowWidth ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
