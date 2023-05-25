@@ -21,7 +21,7 @@
     "prepare": "husky install",
     "prebuild": "rimraf dist",
     "predeploy": "npm run build-storybook",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "git:clean": "git branch | grep -v main | xargs git branch -D"
   },
   "repository": {
