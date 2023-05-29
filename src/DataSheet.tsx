@@ -39,31 +39,31 @@ function DataSheet({
   }: any = React.useContext(GlobalStateContext);
   const [groupData, setGroupData] = useState<any>([]);
 
-  function onSort(filterOption: string, option: any): void {
+  const onSort = (filterOption: string, option: any) => {
     onHandleSort(filterOption, option);
-  }
-  function onSearch(searchValue: string) {
+  };
+  const onSearch = (searchValue: string) => {
     onHandleSearch(searchValue);
-  }
-  function RowHeight(heights: number): void {
+  };
+  const RowHeight = (heights: number) => {
     setColumnsWidthHeight((old: any) => ({ ...old, height: heights }));
-  }
+  };
 
-  function RowWidth(widths: number): void {
+  const RowWidth = (widths: number) => {
     setColumnsWidthHeight((old: any) => ({ ...old, width: widths }));
-  }
+  };
 
-  function filter(fieldName: string, operator: any, value: any): void {
+  const filter = (fieldName: string, operator: any, value: any) => {
     onHandleFilter(fieldName, operator, value);
-  }
-  function updateVisibility(columnName: string, value: boolean): void {
+  };
+  const updateVisibility = (columnName: string, value: boolean) => {
     const index = headers.findIndex(
       (column: any) => column.fieldName === columnName,
     );
     const newColumns = [...headers];
     newColumns[index].isVisible = value;
     setHeaders(newColumns);
-  }
+  };
   function groupByField(fieldName: string): void {
     const newGroupData = groupByColumnName(rows, fieldName);
     setGroupData(newGroupData);
@@ -181,14 +181,23 @@ function DataSheet({
       <TableRow key={rowIndex as any}>
         <TableData>
           {Object.keys(visibleData[0]).map(
-            (k: any, index: any) => (
-              <Cell
-                value={rowObj[k]}
-                key={index as any}
-                columnName={k}
-                rowIndex={rowIndex as any}
-              />
-            ),
+            (k: any, index: any) => {
+              if (['object', 'array'].includes(typeof rowObj[k])) {
+                // eslint-disable-next-line no-param-reassign
+                rowObj[k] = '';
+              } else if (['boolean'].includes(typeof rowObj[k])) {
+                // eslint-disable-next-line no-return-assign, no-param-reassign
+                return rowObj[k] = rowObj[k].toString();
+              }
+              return (
+                <Cell
+                  value={rowObj[k]}
+                  key={index as any}
+                  columnName={k}
+                  rowIndex={rowIndex as any}
+                />
+              );
+            },
           )}
         </TableData>
       </TableRow>
@@ -285,7 +294,4 @@ function DataSheet({
     </>
   );
 }
-
-DataSheet.whyDidYouRender = false;
-
 export default DataSheet;

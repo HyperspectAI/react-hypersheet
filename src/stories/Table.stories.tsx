@@ -1,11 +1,7 @@
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import Table from '../index';
-import twoHundredCols from './mocks/200-cols.json';
-import fourHundredCols from './mocks/400-cols.json';
-import sixHundredCols from './mocks/600-cols.json';
-import oneThousandCols from './mocks/1000-cols.json';
 
 const meta: Meta<typeof Table> = {
   title: 'Table',
@@ -26,21 +22,10 @@ const getHeaders = (prospects: any) => {
   return arr;
 };
 
-type IPresetData = '200cols' | '400cols' | '600cols' | '1000cols';
-
-const getProspects = (presetData: IPresetData) => {
-  if (presetData === '200cols') return twoHundredCols;
-  if (presetData === '400cols') return fourHundredCols;
-  if (presetData === '600cols') return sixHundredCols;
-  if (presetData === '1000cols') return oneThousandCols;
-  return null;
-};
-
 function StoryComp() {
-  const [presetData, setPresetData] = React.useState<IPresetData | null>(null);
-  const prospects = getProspects(presetData as any);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
+  const [search, setSearch] = React.useState('');
   const handlePageChange = (page: any) => {
     setCurrentPage(page);
     console.log('page', page);
@@ -49,49 +34,9 @@ function StoryComp() {
     setPerPage(value);
     console.log('value', value);
   };
-  const totalItems = 100; // Replace with the actual total number of items
-  const totalPages = Math.ceil(totalItems / perPage);
-
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(`Number of rows passed${prospects?.length}`);
-  }, [prospects]);
-
-  if (!presetData) {
-    return (
-      <div style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: '20px',
-        marginBottom: '20px',
-      }}
-      >
-        <small>Please selected one of preset for sample data: &nbsp;</small>
-        <select onChange={(e) => setPresetData(e.target.value as IPresetData)}>
-          <option value="">
-            Choose option
-          </option>
-          <option value="200cols">
-            200 Columns
-          </option>
-          <option value="400cols">
-            400 Columns
-          </option>
-          <option value="600cols">
-            600 Columns
-          </option>
-          <option value="1000cols">
-            1000 Columns
-          </option>
-        </select>
-      </div>
-    );
-  }
-
   const handleSearch = (e: any) => {
     console.log('search', e);
+    setSearch(e);
   };
 
   const handleSort = (e: any, n: any) => {
@@ -101,29 +46,37 @@ function StoryComp() {
   const handleFilter = (e: any, n: any, x: any) => {
     console.log('filter', e, n, x);
   };
+  const [passengersData, setData] = React.useState([]);
+  useEffect(() => {
+    // eslint-disable-next-line max-len
+    fetch(`https://jsonplaceholder.typicode.com/posts?_page=${currentPage}&_limit=${perPage}&_search=${search}`)
+      .then((response) => response.json())
+      .then((json) => { setData(json); });
+  }, [currentPage, perPage, search]);
 
+  console.log('passengersData', passengersData.length / perPage);
+  // const totalPages = Math.ceil(passengersData.length / perPage);
+  if (!passengersData?.length) return null;
   return (
     <div>
-      {presetData && (
-        <Table
-          headers={getHeaders(prospects)}
-          rows={prospects}
-          showPageHeader
-          showToolbar
-          docTitle="My document"
-          key={presetData}
-          onSearch={handleSearch}
-          onSort={handleSort}
-          onFilter={handleFilter}
-          isPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          perPageOptions={[10, 20, 30, 40, 50]}
-          perPage={perPage}
-          onPageChange={handlePageChange}
-          onPerPageChange={handlePerPageChange}
-        />
-      )}
+      <Table
+        headers={getHeaders(passengersData)}
+        rows={passengersData}
+        showPageHeader
+        showToolbar
+        docTitle="My document"
+        key={null}
+        onSearch={handleSearch}
+        onSort={handleSort}
+        onFilter={handleFilter}
+        isPagination
+        currentPage={currentPage}
+        totalPages={passengersData.length}
+        perPageOptions={[10, 20, 30, 40, 50]}
+        perPage={perPage}
+        onPageChange={handlePageChange}
+        onPerPageChange={handlePerPageChange}
+      />
     </div>
   );
 }

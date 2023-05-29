@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useContext } from 'react';
@@ -35,6 +36,9 @@ function Table(props: TableProps) {
     }
   }, [Global.isClear]);
 
+  if (!props) {
+    return null;
+  }
   return (
     <DataSheet
       onHandleSearch={props?.onSearch}

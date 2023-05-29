@@ -67,6 +67,7 @@ function Pagination({
           <div className="pagination__per-page-dropdown">
             <select
               value={perPage}
+              className="form-select"
               onChange={(e) => handlePerPageChange(e.target.value)}
               onFocus={() => setShowPerPageOptions(true)}
               onBlur={() => setShowPerPageOptions(false)}
