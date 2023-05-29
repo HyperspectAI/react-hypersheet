@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React from 'react';
 
 function Pagination({
   isPagination,
@@ -10,8 +10,6 @@ function Pagination({
   onPageChange,
   onPerPageChange,
 }: any) {
-  const [showPerPageOptions, setShowPerPageOptions] = useState(false);
-
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
@@ -69,16 +67,11 @@ function Pagination({
               value={perPage}
               className="form-select"
               onChange={(e) => handlePerPageChange(e.target.value)}
-              onFocus={() => setShowPerPageOptions(true)}
-              onBlur={() => setShowPerPageOptions(false)}
+              // onFocus={() => setShowPerPageOptions(true)}
+              // onBlur={() => setShowPerPageOptions(false)}
             >
               {renderPerPageOptions()}
             </select>
-            {showPerPageOptions && (
-            <div className="pagination__per-page-options">
-              {renderPerPageOptions()}
-            </div>
-            )}
           </div>
         </div>
         <div className="pagination__pages">
