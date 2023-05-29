@@ -294,4 +294,7 @@ function DataSheet({
     </>
   );
 }
+
+DataSheet.whyDidYouRender = false;
+
 export default DataSheet;

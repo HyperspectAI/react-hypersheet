@@ -134,8 +134,8 @@ function Toolbar({
           </p>
           {openModal?.hideFields ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
-              {columns?.map((ele: any) => (
-                <div className={clsx(classes.dropdownListItem)}>
+              {columns?.map((ele: any, index: any) => (
+                <div className={clsx(classes.dropdownListItem)} key={index as any}>
                   <input type="checkbox" value={ele?.isVisible} onChange={() => handleHideColumns(ele?.fieldName, !ele?.isVisible)} />
                   <span className={`${classes.checkboxLabel}`}>{ele?.fieldName}</span>
                 </div>
@@ -154,8 +154,8 @@ function Toolbar({
                 <div className="select-field">
                   <select id="field-select" value={filterData?.fieldName} onChange={(e) => setFilterData((old) => ({ ...old, fieldName: e.target.value }))}>
                     <option value="">Select Field</option>
-                    {columns?.map((ele: any) => (
-                      <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                    {columns?.map((ele: any, index: any) => (
+                      <option value={ele?.fieldName} key={index as any}>{ele?.fieldName}</option>
                     ))}
                   </select>
                   <MdExpandMore />
@@ -164,8 +164,8 @@ function Toolbar({
                 <div className="select-field">
                   <select id="field-select" value={filterData?.operator} onChange={(e) => setFilterData((old) => ({ ...old, operator: e.target.value }))}>
                     <option value="">Select Operator</option>
-                    {operators?.map((ele: any) => (
-                      <option value={ele}>{ele}</option>
+                    {operators?.map((ele: any, index: any) => (
+                      <option value={ele} key={index as any}>{ele}</option>
                     ))}
                   </select>
                   <MdExpandMore />
@@ -201,10 +201,11 @@ function Toolbar({
           </p>
           {openModal?.grouping ? (
             <div className={`${classes.dropdownList} fieldDropdown`}>
-              {columns?.map((ele: any) => (
+              {columns?.map((ele: any, index: any) => (
                 <span
                   onClick={() => handleGrouping(ele?.fieldName)}
                   className={clsx(classes.dropdownListItem)}
+                  key={index as any}
                 >
                   {ele?.fieldName}
                 </span>
@@ -223,8 +224,8 @@ function Toolbar({
                 <div className="select-field">
                   <select id="field-select" value={selectSortField} onChange={handleSortFieldChange}>
                     <option value="">Select Field</option>
-                    {columns?.map((ele: any) => (
-                      <option value={ele?.fieldName}>{ele?.fieldName}</option>
+                    {columns?.map((ele: any, index: any) => (
+                      <option value={ele?.fieldName} key={index as any}>{ele?.fieldName}</option>
                     ))}
                   </select>
                   <MdExpandMore />
@@ -262,8 +263,8 @@ function Toolbar({
               <div className="select-field">
                 <select id="row-height" value={rowHeight} onChange={handleRowHeight}>
                   <option value="">Select Height Pixel</option>
-                  {rowHeightOptions.map((option) => (
-                    <option key={option} value={option}>
+                  {rowHeightOptions.map((option, index: any) => (
+                    <option value={option} key={index as any}>
                       {option}
                       pixels
                     </option>
