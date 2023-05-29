@@ -15,51 +15,12 @@ interface Props {
 
 function Cell({
   value,
-  searchTerms,
-  handleCellChange,
-  columnName,
-  rowIndex,
 }: any) {
   const classes = useStyles();
   const {
     columnsWidthHeight,
   }: any = React.useContext(GlobalStateContext);
-  const [isSelected, setIsSelected] = React.useState(false);
-  const [editing, setEditing] = React.useState(false);
-  const [currentValue, setCurrentValue] = React.useState(value);
-  const handleDoubleClick = () => {
-    setEditing(true);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentValue(event.target.value);
-  };
-
-  const handleBlur = () => {
-    setEditing(false);
-    handleCellChange(rowIndex, columnName, currentValue);
-  };
-  if (editing) {
-    return (
-      <div>
-        <div className={
-          clsx(classes.tableCell, isSelected && classes.selectedTableCell)
-        }
-        >
-          <input
-            type="text"
-            value={currentValue}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-            className={clsx(classes.selectedTableCellInput)}
-          />
-        </div>
-      </div>
-
-    );
-  }
+  const [isSelected] = React.useState(false);
 
   return (
     <div
@@ -70,13 +31,7 @@ function Cell({
       className={
         clsx(classes.tableCell, isSelected && classes.selectedTableCell)
       }
-      // onClick={() => setIsSelected(true)}
       role="none"
-    // eslint-disable-next-line react/no-danger
-    // dangerouslySetInnerHTML={
-    //   { __html: renderHighlightedText(value, searchTerms) }
-    // }
-    // onDoubleClick={handleDoubleClick}
     >
       {value}
     </div>

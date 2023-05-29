@@ -189,3 +189,59 @@ body {
         display: none;
     }
   }
+
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination__per-page span {
+    margin-right: 10px;
+  }
+  
+  .pagination__per-page-dropdown {
+    position: relative;
+  }
+  
+  .pagination__per-page-dropdown select {
+    padding: 5px;
+  }
+  
+  .pagination__per-page-options {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+  }
+  
+  .pagination__pages {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pagination__button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .pagination__button.active {
+    background-color: #ccc;
+  }
+  
+  .pagination__button:disabled {
+    cursor: not-allowed;
+  }
+  
+  .pagination__ellipsis {
+    margin-right: 5px;
+  }
+  

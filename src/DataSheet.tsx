@@ -11,12 +11,22 @@ import Cell from './Cell';
 import {
   downloadCSV,
   groupByColumnName,
-  filterData,
-  sortFunc,
 } from './utils';
 import AppendObjectInArray from './utils/appendObjectInArray';
+import Pagination from './Pagination';
 
-function DataSheet() {
+function DataSheet({
+  onHandleSearch,
+  onHandleSort,
+  onHandleFilter,
+  isPagination,
+  currentPage,
+  totalPages,
+  perPageOptions,
+  perPage,
+  onPageChange,
+  onPerPageChange,
+}: any) {
   const classes = useStyles();
   const {
     headers,
@@ -28,14 +38,12 @@ function DataSheet() {
     setColumnsWidthHeight,
   }: any = React.useContext(GlobalStateContext);
   const [groupData, setGroupData] = useState<any>([]);
-  const [searchTerm, setSearchTerm] = useState('');
 
   function onSort(filterOption: string, option: any): void {
-    const sortData = sortFunc(rows, filterOption, option);
-    setRows(sortData);
+    onHandleSort(filterOption, option);
   }
-  function onSearch(searchValue: string): void {
-    setSearchTerm(searchValue);
+  function onSearch(searchValue: string) {
+    onHandleSearch(searchValue);
   }
   function RowHeight(heights: number): void {
     setColumnsWidthHeight((old: any) => ({ ...old, height: heights }));
@@ -46,8 +54,7 @@ function DataSheet() {
   }
 
   function filter(fieldName: string, operator: any, value: any): void {
-    const Data = filterData(rows, fieldName, operator, value);
-    setRows(Data);
+    onHandleFilter(fieldName, operator, value);
   }
   function updateVisibility(columnName: string, value: boolean): void {
     const index = headers.findIndex(
@@ -64,15 +71,15 @@ function DataSheet() {
   function downloadData(): void {
     downloadCSV(rows, 'sample.csv');
   }
-  const handleCellChange = (
-    rowIndex: number,
-    columnName: string,
-    value: string,
-  ) => {
-    const updatedRows = [...rows];
-    updatedRows[rowIndex][columnName] = value;
-    setRows(updatedRows);
-  };
+  // const handleCellChange = (
+  //   rowIndex: number,
+  //   columnName: string,
+  //   value: string,
+  // ) => {
+  //   const updatedRows = [...rows];
+  //   updatedRows[rowIndex][columnName] = value;
+  //   setRows(updatedRows);
+  // };
   function addTableRow() {
     setRows(AppendObjectInArray(rows));
   }
@@ -161,7 +168,7 @@ function DataSheet() {
   function splitArrayIntoChunks(array: any, chunkSize: number) {
     const result = [];
 
-    for (let i = 0; i < array.length; i += chunkSize) {
+    for (let i = 0; i < array?.length; i += chunkSize) {
       result.push(...array.slice(i, i + chunkSize));
     }
 
@@ -170,16 +177,14 @@ function DataSheet() {
 
   const cellRows = useMemo(() => {
     const visibleData: any = splitArrayIntoChunks(rows, 10);
-    const data = visibleData.map((rowObj: any[], rowIndex: any) => (
+    const data = visibleData?.map((rowObj: any[], rowIndex: any) => (
       <TableRow key={rowIndex as any}>
         <TableData>
           {Object.keys(visibleData[0]).map(
             (k: any, index: any) => (
               <Cell
                 value={rowObj[k]}
-                searchTerms={searchTerm}
                 key={index as any}
-                handleCellChange={handleCellChange}
                 columnName={k}
                 rowIndex={rowIndex as any}
               />
@@ -188,15 +193,15 @@ function DataSheet() {
         </TableData>
       </TableRow>
     ));
-    const filteredRows = data.filter((row: any) => row !== null);
+    const filteredRows = data?.filter((row: any) => row !== null);
     return filteredRows;
   }, [rows]);
   return (
     <>
       <div className={classes.fixedTop}>
-        {commonState.showPageHeader
+        {commonState?.showPageHeader
           && <PageHeader docTitle={commonState.docTitle} />}
-        {commonState.showToolbar && (
+        {commonState?.showToolbar && (
           <Toolbar
             style={
               {
@@ -268,6 +273,15 @@ function DataSheet() {
 
         </div>
       </div>
+      <Pagination
+        isPagination={isPagination}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        perPageOptions={perPageOptions}
+        perPage={perPage}
+        onPageChange={onPageChange}
+        onPerPageChange={onPerPageChange}
+      />
     </>
   );
 }

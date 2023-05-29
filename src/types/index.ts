@@ -24,6 +24,23 @@ interface TooltipProps {
   content: string;
   children: React.ReactElement;
 }
+interface TableProps {
+  onSearch: any;
+  onSort: any;
+  onFilter: any;
+  showPageHeader: boolean;
+  showToolbar: boolean;
+  headers: HeaderKey[];
+  rows: any;
+  docTitle: string;
+  isPagination: any,
+  currentPage: number,
+  totalPages: number,
+  perPageOptions: any
+  perPage: number;
+  onPageChange: any;
+  onPerPageChange: any
+}
 export {
   HeaderKey,
   GlobalStateContextVals,
@@ -32,4 +49,5 @@ export {
   Operator,
   ObjectUnion,
   TooltipProps,
+  TableProps,
 };

@@ -15,7 +15,7 @@ function TableHeader({
   return (
     <div className={classes.tableHeader}>
       {
-        headers.map((header) => (
+        headers?.map((header) => (
           header?.isVisible && (
           <Cell
             value={header.headerName}
