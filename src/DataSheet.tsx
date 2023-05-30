@@ -190,12 +190,14 @@ function DataSheet({
                 return rowObj[k] = rowObj[k].toString();
               }
               return (
+                headers[index]?.isVisible && (
                 <Cell
                   value={rowObj[k]}
                   key={index as any}
                   columnName={k}
                   rowIndex={rowIndex as any}
                 />
+                )
               );
             },
           )}
@@ -204,7 +206,7 @@ function DataSheet({
     ));
     const filteredRows = data?.filter((row: any) => row !== null);
     return filteredRows;
-  }, [rows]);
+  }, [rows, headers]);
   return (
     <>
       <div className={classes.fixedTop}>
