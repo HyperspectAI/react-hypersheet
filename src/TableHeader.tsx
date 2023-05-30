@@ -15,10 +15,11 @@ function TableHeader({
   return (
     <div className={classes.tableHeader}>
       {
-        headers.map((header) => (
+        headers?.map((header, index) => (
           header?.isVisible && (
           <Cell
             value={header.headerName}
+            key={index as any}
             searchTerms=""
             handleCellChange={undefined}
             columnName={undefined}
