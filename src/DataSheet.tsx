@@ -26,6 +26,7 @@ function DataSheet({
   perPage,
   onPageChange,
   onPerPageChange,
+  onHandleCellChange,
 }: any) {
   const classes = useStyles();
   const {
@@ -71,15 +72,13 @@ function DataSheet({
   function downloadData(): void {
     downloadCSV(rows, 'sample.csv');
   }
-  // const handleCellChange = (
-  //   rowIndex: number,
-  //   columnName: string,
-  //   value: string,
-  // ) => {
-  //   const updatedRows = [...rows];
-  //   updatedRows[rowIndex][columnName] = value;
-  //   setRows(updatedRows);
-  // };
+  const handleCellChange = (
+    rowIndex: number,
+    columnName: string,
+    currentVal : any,
+  ) => {
+    onHandleCellChange(rowIndex, columnName, currentVal);
+  };
   function addTableRow() {
     setRows(AppendObjectInArray(rows));
   }
@@ -185,17 +184,16 @@ function DataSheet({
               if (['object', 'array'].includes(typeof rowObj[k])) {
                 // eslint-disable-next-line no-param-reassign
                 rowObj[k] = '';
-              } else if (['boolean'].includes(typeof rowObj[k])) {
-                // eslint-disable-next-line no-return-assign, no-param-reassign
-                return rowObj[k] = rowObj[k].toString();
               }
               return (
                 headers[index]?.isVisible && (
                 <Cell
                   value={rowObj[k]}
                   key={index as any}
+                  rowObject={rowObj}
                   columnName={k}
                   rowIndex={rowIndex as any}
+                  handleCellChange={handleCellChange}
                 />
                 )
               );

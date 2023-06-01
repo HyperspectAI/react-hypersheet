@@ -39,7 +39,8 @@ interface TableProps {
   perPageOptions: any
   perPage: number;
   onPageChange: any;
-  onPerPageChange: any
+  onPerPageChange: any;
+  onHandleCellChange: any;
 }
 export {
   HeaderKey,

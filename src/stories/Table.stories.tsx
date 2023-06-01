@@ -35,12 +35,15 @@ function StoryComp() {
     console.log('value', value);
   };
   const handleSearch = (e: any) => {
-    console.log('search', e);
+    console.log('search+++++++++', e);
     setSearch(e);
   };
 
   const handleSort = (e: any, n: any) => {
     console.log('sort', e, n);
+  };
+  const handleCellChange = (e: any, n: any, x: any) => {
+    console.log('editable', e, n, x);
   };
 
   const handleFilter = (e: any, n: any, x: any) => {
@@ -49,13 +52,13 @@ function StoryComp() {
   const [passengersData, setData] = React.useState([]);
   useEffect(() => {
     // eslint-disable-next-line max-len
-    fetch(`https://jsonplaceholder.typicode.com/posts?_page=${currentPage}&_limit=${perPage}&_search=${search}`)
+    fetch(`https://jsonplaceholder.typicode.com/users?_page=${currentPage}&_limit=${perPage}&_search=${search}`)
       .then((response) => response.json())
       .then((json) => { setData(json); });
   }, [currentPage, perPage, search]);
 
   console.log('passengersData', passengersData.length / perPage);
-  // const totalPages = Math.ceil(passengersData.length / perPage);
+  const totalPages = Math.ceil(10 / perPage);
   if (!passengersData?.length) return null;
   return (
     <div>
@@ -71,11 +74,12 @@ function StoryComp() {
         onFilter={handleFilter}
         isPagination
         currentPage={currentPage}
-        totalPages={passengersData.length}
+        totalPages={totalPages}
         perPageOptions={[10, 20, 30, 40, 50]}
         perPage={perPage}
         onPageChange={handlePageChange}
         onPerPageChange={handlePerPageChange}
+        onHandleCellChange={handleCellChange}
       />
     </div>
   );

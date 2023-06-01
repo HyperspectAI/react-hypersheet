@@ -16,7 +16,7 @@ export function GlobalStateProvider({
   const [rows, setRows] = useState([]);
   const [isClear, setIsClear] = useState(false);
   const [columnsWidthHeight, setColumnsWidthHeight] = useState({
-    width: 120,
+    width: 100,
     height: 40,
   });
   const [commonState, setCommonState] = useState({
