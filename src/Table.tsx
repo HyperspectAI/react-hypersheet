@@ -51,6 +51,7 @@ function Table(props: TableProps) {
       perPage={props?.perPage}
       onPageChange={props?.onPageChange}
       onPerPageChange={props?.onPerPageChange}
+      onHandleCellChange={props.onHandleCellChange}
     />
   );
 }

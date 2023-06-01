@@ -81,6 +81,7 @@ function Toolbar({
   const [rowHeight, setRowHeight] = useState<number>(50);
   const [rowWidth, setRowWidth] = useState<number>(50);
   const [rowHeightOptions] = useState<number[]>([100, 110, 120, 130]);
+  const [rowWidthOptions] = useState<number[]>([150, 160, 170, 180]);
   const [filterData, setFilterData] = useState({
     fieldName: '',
     operator: '',
@@ -275,7 +276,7 @@ function Toolbar({
             </div>
           ) : null}
         </div>
-        {/* <div className={`${classes.dataSheetToolbar} toolbarItem`}>
+        <div className={`${classes.dataSheetToolbar} toolbarItem`}>
           <p className={`${classes.dataSheetText}`} onClick={() => { handleModalToggle('rowWidth'); }} aria-hidden="true">
             <MdCalendarViewMonth />
             <span>Row Width</span>
@@ -284,8 +285,9 @@ function Toolbar({
             <div className={`${classes.dropdownList} fieldDropdown`}>
               <div className="select-field">
                 <select id="row-height" value={rowWidth} onChange={handleRowWidth}>
-                  {rowHeightOptions.map((option) => (
-                    <option key={option} value={option}>
+                  <option value="">Select Width Pixel</option>
+                  {rowWidthOptions.map((option, index: any) => (
+                    <option value={option} key={index as any}>
                       {option}
                       pixels
                     </option>
@@ -295,7 +297,7 @@ function Toolbar({
               </div>
             </div>
           ) : null}
-        </div> */}
+        </div>
         <div className="search-box">
           <input
             placeholder="Search..."
