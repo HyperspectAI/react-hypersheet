@@ -132,7 +132,8 @@ const styles = {
     fontSize: '13px',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'normal', /* Update whiteSpace property */
+    wordBreak: 'break-all', /* Add wordBreak property */
     verticalAlign: 'middle',
   },
   selectedTableCell: {

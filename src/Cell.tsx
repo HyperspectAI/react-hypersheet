@@ -69,6 +69,7 @@ function Cell({
       className={clsx(classes.tableCell, isSelected && classes.selectedTableCell)}
       role="none"
       onDoubleClick={handleDoubleClick}
+      title={value}
     >
       {value}
     </div>
